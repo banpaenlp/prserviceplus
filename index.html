@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR Service plus+ | เทศบาลตำบลบ้านแป้น</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS STYLE SECTION --- */
+        :root {
+            --bg-color: #ffffff;
+            --primary-blue: #0A369D;
+            --light-blue: #4A90E2;
+            --sky-blue: #EBF3FC;
+            --primary-orange: #FF7F11;
+            --light-orange: #FFF3E6;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --status-pending: #FF7F11;
+            --status-approve: #2ECC71;
+            --status-reject: #E74C3C;
+            --digital-glow: rgba(74, 144, 226, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-image: radial-gradient(var(--digital-glow) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header & Logo Banner */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: glowEffect 6s infinite linear;
+        }
+
+        @keyframes glowEffect {
+            0% { transform: translate(-30%, -30%) rotate(45deg); }
+            100% { transform: translate(30%, 30%) rotate(45deg); }
+        }
+
+        .logo-placeholder {
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px dashed var(--primary-orange);
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--sky-blue);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            background: var(--sky-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn i { margin-right: 8px; }
+
+        /* Form Controls & Layout */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--sky-blue);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .card.active { display: block; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-blue);
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #DCE4EC;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--light-blue);
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Checkbox Grid */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            background: var(--sky-blue);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-blue);
+        }
+
+        /* Buttons & Animation */
+        .btn {
+            background: linear-gradient(135deg, var(--primary-orange), #FF9F43);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 127, 17, 0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(255, 127, 17, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            box-shadow: 0 4px 15px rgba(10, 54, 157, 0.3);
+        }
+
+        /* Data Table & Admin Dashboard */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--sky-blue);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #EEF2F5;
+        }
+
+        th {
+            background-color: var(--sky-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        tr:hover { background-color: #F9FBFC; }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .status-pending { background-color: var(--light-orange); color: var(--status-pending); }
+        .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
+        .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
+
+        /* Popup Modal & Star Rating */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            direction: rtl;
+        }
+
+        .stars input { display: none; }
+
+        .stars label {
+            font-size: 35px;
+            color: #DCE4EC;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label,
+        .stars input:checked ~ label {
+            color: #FFC107;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs { flex-direction: column; }
+            .checkbox-grid { grid-template-columns: 1fr; }
+            th, td { padding: 10px; font-size: 13px; }
+            .modal-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo-placeholder">
+            [ โลโก้หน่วยงาน PR Service plus+ สไตล์แนวนอน ]
+        </div>
+        <h1>PR Service plus+</h1>
+        <p>ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('staff')"><i class="fa-solid fa-user-tie"></i>สำหรับเจ้าหน้าที่เทศบาล</button>
+        <button class="tab-btn" onclick="switchTab('public')"><i class="fa-solid fa-users"></i>สำหรับประชาชนทั่วไป</button>
+        <button class="tab-btn" onclick="switchTab('tracking')"><i class="fa-solid fa-magnifying-glass"></i>ติดตามสถานะคำขอ</button>
+        <button class="tab-btn" onclick="switchTab('admin-login')" style="margin-left: auto; background: var(--light-orange); color: var(--primary-orange);"><i class="fa-solid fa-lock"></i>ผู้ดูแลระบบ (Admin)</button>
+    </div>
+
+    <div id="staff-tab" class="card active">
+        <h2><i class="fa-solid fa-user-tie"></i> ยื่นคำขอสำหรับเจ้าหน้าที่เทศบาล</h2>
+        <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
+        <form id="staffForm" onsubmit="handleFormSubmit(event, 'เจ้าหน้าที่')">
+            <div class="form-group">
+                <label>ชื่อ-นามสกุล ผู้ขอใช้บริการ <span style="color:red;">*</span></label>
+                <input type="text" id="staffName" required placeholder="กรอกชื่อและนามสกุล">
+            </div>
+            <div class="form-group">
+                <label>สังกัดกองงาน <span style="color:red;">*</span></label>
+                <select id="staffDivision" required>
+                    <option value="">-- เลือกกองงาน --</option>
+                    <option value="สำนักปลัด">สำนักปลัด</option>
+                    <option value="กองคลัง">กองคลัง</option>
+                    <option value="กองช่าง">กองช่าง</option>
+                    <option value="กองสาธารณสุขและสิ่งแวดล้อม">กองสาธารณสุขและสิ่งแวดล้อม</option>
+                    <option value="กองยุทธศาสตร์และงบประมาณ">กองยุทธศาสตร์และงบประมาณ</option>
+                    <option value="กองการศึกษา">กองการศึกษา</option>
+                    <option value="กองสวัสดิการสังคม">กองสวัสดิการสังคม</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ประเภทงาน PR ที่ขอใช้ (เลือกได้หลายข้อ) <span style="color:red;">*</span></label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="บันทึกภาพนิ่ง"> บันทึกภาพนิ่ง</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="บันทึกภาพเคลื่อนไหว"> บันทึกภาพเคลื่อนไหว</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="ประชาสัมพันธ์บนเพจเฟซบุ๊ก"> ประชาสัมพันธ์บนเพจเฟซบุ๊ก</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="ประชาสัมพันธ์บนเว็บไซต์"> ประชาสัมพันธ์บนเว็บไซต์</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="ประชาสัมพันธ์ผ่านเสียงตามสาย"> ประชาสัมพันธ์ผ่านเสียงตามสาย</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="พิธีกรดำเนินรายการ"> พิธีกรดำเนินรายการ</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prType" value="รถประชาสัมพันธ์เคลื่อนที่"> รถประชาสัมพันธ์เคลื่อนที่</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>วันและเวลาที่ต้องการขอใช้บริการ <span style="color:red;">*</span></label>
+                <input type="datetime-local" id="staffDateTime" required>
+            </div>
+            <div class="form-group">
+                <label>รายละเอียดเพิ่มเติม</label>
+                <textarea id="staffDetails" rows="4" placeholder="ระบุรายละเอียดงานประชาสัมพันธ์เพิ่มเติม..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>แนบลิงก์ไฟล์ (เช่น Google Drive, OneDrive - ถ้ามี)</label>
+                <input type="text" id="staffFileLink" placeholder="https://drive.google.com/...">
+            </div>
+            <div class="form-group">
+                <label>อีเมลสำหรับแจ้งอัปเดตสถานะ (ไม่บังคับ)</label>
+                <input type="email" id="staffEmail" placeholder="example@gmail.com">
+            </div>
+            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ</button>
+        </form>
+    </div>
+
+    <div id="public-tab" class="card">
+        <h2><i class="fa-solid fa-users"></i> ยื่นคำขอสำหรับประชาชนทั่วไป</h2>
+        <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
+        <form id="publicForm" onsubmit="handleFormSubmit(event, 'ประชาชน')">
+            <div class="form-group">
+                <label>ชื่อ-นามสกุล ผู้ขอความอนุเคราะห์ <span style="color:red;">*</span></label>
+                <input type="text" id="pubName" required placeholder="กรอกชื่อและนามสกุล">
+            </div>
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์ติดต่อ <span style="color:red;">*</span></label>
+                <input type="tel" id="pubPhone" required placeholder="กรอกเบอร์โทรศัพท์">
+            </div>
+            <div class="form-group">
+                <label>เรื่องที่ขอความอนุเคราะห์ประชาสัมพันธ์ <span style="color:red;">*</span></label>
+                <textarea id="pubDetails" rows="4" required placeholder="กรอกรายละเอียดเรื่องที่ต้องการให้ประชาสัมพันธ์"></textarea>
+            </div>
+            <div class="form-group">
+                <label>แนบลิงก์ไฟล์เพิ่มเติม (ถ้ามี)</label>
+                <input type="text" id="pubFileLink" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>อีเมลสำหรับแจ้งอัปเดตสถานะ (ไม่บังคับ)</label>
+                <input type="email" id="pubEmail" placeholder="example@gmail.com">
+            </div>
+            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์</button>
+        </form>
+    </div>
+
+    <div id="tracking-tab" class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <h2><i class="fa-solid fa-list-check"></i> รายการคำขอและสถานะปัจจุบัน</h2>
+            <button class="btn btn-secondary" onclick="fetchDataRealtime()"><i class="fa-solid fa-rotate"></i> รีเฟรชข้อมูลล่าสุด</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text-light); margin-top: 5px;" id="lastUpdateText">อัปเดตล่าสุดเมื่อ: -</p>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>วัน/เวลาทำรายการ</th>
+                        <th>ประเภทผู้ขอ</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>สังกัด/เบอร์โทร</th>
+                        <th>งานที่ขอใช้บริการ / รายละเอียด</th>
+                        <th>วันเวลานัดหมาย</th>
+                        <th>ลิงก์ไฟล์</th>
+                        <th>ความพึงพอใจ</th>
+                        <th>สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr><td colspan="9" style="text-align:center;">กำลังโหลดข้อมูลเรียลไทม์จากระบบ...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="admin-login-tab" class="card">
+        <h2><i class="fa-solid fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่แอดมิน</h2>
+        <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
+        <div class="form-group" style="max-width: 400px;">
+            <label>รหัสผ่านเข้าสู่ระบบ (Password)</label>
+            <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่านเข้าสู่ระบบ">
+            <button class="btn btn-secondary" style="margin-top: 15px;" onclick="loginAdmin()">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
+    <div id="admin-dashboard-tab" class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2><i class="fa-solid fa-gauge"></i> แผงควบคุมผู้ดูแลระบบ (Admin Dashboard)</h2>
+            <button class="btn" style="background:crimson;" onclick="logoutAdmin()">ออกจากระบบ</button>
+        </div>
+        <div class="table-responsive" style="margin-top:20px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>วัน/เวลาทำรายการ</th>
+                        <th>ผู้ขอใช้</th>
+                        <th>ข้อมูลติดต่อ/สังกัด</th>
+                        <th>วันเวลานัดหมาย</th> <th>รายละเอียดงาน</th>
+                        <th>ลิงก์</th>
+                        <th>สถานะปัจจุบัน</th>
+                        <th>จัดการสถานะ (เชื่อมโยง Google Sheet)</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="satisfactionModal" class="modal">
+    <div class="modal-content">
+        <h2 style="color: var(--status-approve);"><i class="fa-solid fa-circle-check"></i> ส่งคำขอเรียบร้อยแล้ว!</h2>
+        <p style="margin-top: 10px;">กองยุทธศาสตร์และงบประมาณ ได้รับข้อมูลของท่านแล้ว</p>
+        <p style="font-size: 14px; color: var(--text-light); margin-top: 5px;">โปรดประเมินความพึงพอใจในการใช้บริการผ่านระบบออนไลน์</p>
+        
+        <form id="ratingForm" onsubmit="submitRating(event)">
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="มากที่สุด (5 ดาว)">★</label>
+                <input type="radio" id="star4" name="rating" value="4"/><label for="star4" title="มาก (4 ดาว)">★</label>
+                <input type="radio" id="star3" name="rating" value="3"/><label for="star3" title="ปานกลาง (3 ดาว)">★</label>
+                <input type="radio" id="star2" name="rating" value="2"/><label for="star2" title="น้อย (2 ดาว)">★</label>
+                <input type="radio" id="star1" name="rating" value="1"/><label for="star1" title="น้อยที่สุด (1 ดาว)">★</label>
+            </div>
+            <button type="submit" class="btn"><i class="fa-solid fa-star"></i> บันทึกและเสร็จสิ้น</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    /* --- JAVASCRIPT LOGIC SECTION --- */
+    // URL เว็บแอปของ Google Apps Script
+    const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; 
+    
+    let currentSubmittedRowId = null; 
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.nav-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        const targetTab = document.getElementById(`${tabName}-tab`);
+        if (targetTab) targetTab.classList.add('active');
+        
+        const activeBtn = Array.from(document.querySelectorAll('.nav-tabs .tab-btn')).find(btn => btn.innerText.includes(
+            tabName === 'staff' ? 'เจ้าหน้าที่' : tabName === 'public' ? 'ประชาชน' : tabName === 'tracking' ? 'ติดตามสถานะ' : 'ผู้ดูแลระบบ'
+        ));
+        if (activeBtn) activeBtn.classList.add('active');
+
+        if (tabName === 'tracking') {
+            fetchDataRealtime();
+        }
+    }
+
+    function loginAdmin() {
+        const pass = document.getElementById('adminPassword').value;
+        if (pass === 'prbp6675') {
+            document.getElementById('admin-login-tab').classList.remove('active');
+            document.getElementById('admin-dashboard-tab').classList.add('active');
+            fetchDataRealtime();
+        } else {
+            alert('รหัสผ่านแอดมินไม่ถูกต้อง! กรุณาลองใหม่อีกครั้ง');
+        }
+    }
+
+    function logoutAdmin() {
+        document.getElementById('admin-dashboard-tab').classList.remove('active');
+        document.getElementById('admin-login-tab').classList.add('active');
+        document.getElementById('adminPassword').value = '';
+    }
+
+    function handleFormSubmit(event, userType) {
+        event.preventDefault();
+        
+        let formData = {
+            action: 'createRequest',
+            timestamp: new Date().toLocaleString('th-TH'),
+            userType: userType,
+            status: 'รอดำเนินการ',
+            rating: '-'
+        };
+
+        if (userType === 'เจ้าหน้าที่') {
+            const checkedPr = Array.from(document.querySelectorAll('input[name="prType"]:checked')).map(el => el.value);
+            if (checkedPr.length === 0) {
+                alert('กรุณาเลือกประเภทงาน PR อย่างน้อย 1 ข้อ');
+                return;
+            }
+            formData.name = document.getElementById('staffName').value;
+            formData.contact = document.getElementById('staffDivision').value;
+            formData.prType = checkedPr.join(', ');
+            formData.dateTime = new Date(document.getElementById('staffDateTime').value).toLocaleString('th-TH');
+            formData.details = document.getElementById('staffDetails').value;
+            formData.fileLink = document.getElementById('staffFileLink').value;
+            formData.email = document.getElementById('staffEmail').value;
+            document.getElementById('staffForm').reset();
+        } else {
+            formData.name = document.getElementById('pubName').value;
+            formData.contact = document.getElementById('pubPhone').value;
+            formData.prType = 'งานความอนุเคราะห์ประชาสัมพันธ์ทั่วไป';
+            formData.dateTime = '- (ตกลงตามหน้างาน)';
+            formData.details = document.getElementById('pubDetails').value;
+            formData.fileLink = document.getElementById('pubFileLink').value;
+            formData.email = document.getElementById('pubEmail').value;
+            document.getElementById('publicForm').reset();
+        }
+
+        currentSubmittedRowId = 'ROW_' + Date.now();
+        formData.rowId = currentSubmittedRowId;
+
+        document.getElementById('satisfactionModal').style.display = 'flex';
+        sendDataToAppsScript(formData);
+    }
+
+    function submitRating(event) {
+        event.preventDefault();
+        const selectedRating = document.querySelector('input[name="rating"]:checked').value;
+        
+        sendDataToAppsScript({
+            action: 'submitRating',
+            rowId: currentSubmittedRowId,
+            rating: selectedRating + " ดาว"
+        });
+
+        document.getElementById('satisfactionModal').style.display = 'none';
+        document.getElementById('ratingForm').reset();
+        switchTab('tracking');
+    }
+
+    function sendDataToAppsScript(data) {
+        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) {
+            let cached = JSON.parse(localStorage.getItem('pr_requests')) || [];
+            if(data.action === 'createRequest') {
+                cached.unshift(data);
+            } else if(data.action === 'submitRating') {
+                let row = cached.find(r => r.rowId === data.rowId);
+                if(row) row.rating = data.rating;
+            } else if(data.action === 'updateStatus') {
+                let row = cached.find(r => r.rowId === data.rowId);
+                if(row) row.status = data.status;
+            } else if(data.action === 'delete') {
+                cached = cached.filter(r => r.rowId !== data.rowId);
+            }
+            localStorage.setItem('pr_requests', JSON.stringify(cached));
+            renderTableHTML(cached);
+            return;
+        }
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(() => {
+            fetchDataRealtime();
+        }).catch(err => console.error("Error communication with Sheets API:", err));
+    }
+
+    function fetchDataRealtime() {
+        document.getElementById('lastUpdateText').innerText = "อัปเดตล่าสุดเมื่อ: " + new Date().toLocaleString('th-TH');
+        
+        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) {
+            let cached = JSON.parse(localStorage.getItem('pr_requests')) || [];
+            renderTableHTML(cached);
+            return;
+        }
+
+        fetch(`${WEB_APP_URL}?action=readAll`)
+        .then(res => res.json())
+        .then(data => {
+            renderTableHTML(data);
+        });
+    }
+
+    function renderTableHTML(dataList) {
+        const userBody = document.getElementById('userTableBody');
+        const adminBody = document.getElementById('adminTableBody');
+        
+        userBody.innerHTML = '';
+        adminBody.innerHTML = '';
+
+        if(dataList.length === 0) {
+            userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+            adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+            return;
+        }
+
+        dataList.forEach(item => {
+            let badgeClass = 'status-pending';
+            if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
+            if(item.status === 'ไม่นุมัติ') badgeClass = 'status-reject';
+
+            let fileHtml = item.fileLink ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);"><i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดไฟล์</a>` : '-';
+
+            // ตารางฝั่งผู้ใช้งานทั่วไป
+            userBody.innerHTML += `
+                <tr>
+                    <td>${item.timestamp}</td>
+                    <td><b>${item.userType}</b></td>
+                    <td>${item.name}</td>
+                    <td>${item.contact}</td>
+                    <td><u>${item.prType}</u><br><small style="color:gray;">${item.details || ''}</small></td>
+                    <td>${item.dateTime}</td>
+                    <td>${fileHtml}</td>
+                    <td style="color:#FFC107; font-weight:bold;">${item.rating}</td>
+                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                </tr>
+            `;
+
+            // ตารางฝั่งแอดมิน (อัปเดตเพิ่มคอลัมน์แสดงข้อมูล วันเวลานัดหมาย เรียบร้อยแล้ว)
+            adminBody.innerHTML += `
+                <tr>
+                    <td>${item.timestamp}</td>
+                    <td>[${item.userType}] <b>${item.name}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
+                    <td>${item.contact}</td>
+                    <td><b style="color:var(--primary-blue);">${item.dateTime}</b></td>
+                    <td><u>${item.prType}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating}</span></td>
+                    <td>${fileHtml}</td>
+                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                    <td>
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
+                            <option value="">--เปลี่ยนสถานะ--</option>
+                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ (สีส้ม)</option>
+                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ (สีเขียว)</option>
+                            <option value="ไม่นุมัติ" ${item.status==='ไม่นุมัติ'?'selected':''}>ไม่นุมัติ (สีแดง)</option>
+                        </select>
+                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;" title="ลบข้อมูล"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function changeStatusRealtime(rowId, newStatus, userEmail) {
+        if(!newStatus) return;
+        if(confirm(`คุณต้องการเปลี่ยนสถานะคำขอนี้เป็น "${newStatus}" ใช่หรือไม่?`)) {
+            sendDataToAppsScript({
+                action: 'updateStatus',
+                rowId: rowId,
+                status: newStatus,
+                email: userEmail
+            });
+            alert('เปลี่ยนสถานะระบบสำเร็จ และระบบจะส่งอีเมลแจ้งเตือนไปยังผู้ใช้ (ถ้ามี)');
+        }
+    }
+
+    function deleteRequest(rowId) {
+        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบคำขอข้อนี้ออกจากฐานข้อมูลแบบถาวร?')) {
+            sendDataToAppsScript({
+                action: 'delete',
+                rowId: rowId
+            });
+        }
+    }
+
+    window.onload = function() {
+        fetchDataRealtime();
+    };
+</script>
+</body>
+</html>
