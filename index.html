@@ -644,13 +644,35 @@
         }
 
         dataList.forEach(item => {
+            // --- 1. จัดฟอร์แมตวันที่ทำรายการให้ออกเป็น วัน/เดือน/ปี ---
+            let displayTimestamp = item.timestamp || '-';
+            if (item.timestamp && item.timestamp !== '-') {
+                try {
+                    // แยกวันที่และเวลาออกจากกันด้วยช่องว่างหรือเครื่องหมายจุลภาค
+                    let parts = item.timestamp.toString().split(/[\s,]+/);
+                    let datePart = parts[0]; 
+                    let timePart = parts[1] || ''; 
+                    
+                    // แยกส่วน ย่อยของวันที่ (รองรับทั้งเครื่องหมาย - และ /)
+                    let dateSplitted = datePart.includes('-') ? datePart.split('-') : datePart.split('/');
+                    
+                    // ถ้าขึ้นต้นด้วยปี 4 หลัก (เช่น 2026/07/21) ให้สลับเป็น วัน/เดือน/ปี
+                    if (dateSplitted[0] && dateSplitted[0].length === 4) {
+                        displayTimestamp = `${dateSplitted[2]}/${dateSplitted[1]}/${dateSplitted[0]} ${timePart}`;
+                    }
+                } catch (e) {
+                    console.error("Error parsing date: ", e);
+                }
+            }
+
+            // --- 2. เช็คสถานะเพื่อใส่สี Badge ---
             let badgeClass = 'status-pending';
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่นุมัติ') badgeClass = 'status-reject';
 
             let fileHtml = item.fileLink ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);"><i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดไฟล์</a>` : '-';
 
-            // ตารางฝั่งผู้ใช้งานทั่วไป
+            // --- 3. แสดงผลตารางฝั่งผู้ใช้งานทั่วไป (User) ---
             userBody.innerHTML += `
                 <tr>
                     <td>${displayTimestamp}</td>
@@ -665,7 +687,7 @@
                 </tr>
             `;
 
-            // ตารางฝั่งแอดมิน (อัปเดตเพิ่มคอลัมน์แสดงข้อมูล วันเวลานัดหมาย เรียบร้อยแล้ว)
+            // --- 4. แสดงผลตารางฝั่งผู้ดูแลระบบ (Admin) ---
             adminBody.innerHTML += `
                 <tr>
                     <td>${displayTimestamp}</td>
