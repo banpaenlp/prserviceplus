@@ -60,32 +60,16 @@
             overflow: hidden;
         }
 
-        header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            animation: glowEffect 6s infinite linear;
-        }
-
-        @keyframes glowEffect {
-            0% { transform: translate(-30%, -30%) rotate(45deg); }
-            100% { transform: translate(30%, 30%) rotate(45deg); }
-        }
-
         .logo-placeholder {
-    width: 100%;
-    max-width: 500px;
-    height: 100px;
-    margin: 0 auto 15px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Navigation Tabs */
         .nav-tabs {
             display: flex;
@@ -147,13 +131,21 @@
             transition: all 0.3s;
         }
 
+        input[type="file"] {
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px dashed var(--light-blue);
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--light-blue);
             box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
         }
 
-        /* Checkbox Grid */
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -193,9 +185,10 @@
             box-shadow: 0 4px 15px rgba(255, 127, 17, 0.3);
         }
 
-        .btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 5px rgba(255, 127, 17, 0.2);
+        .btn:disabled {
+            background: #bdc3c7;
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
         .btn-secondary {
@@ -203,7 +196,7 @@
             box-shadow: 0 4px 15px rgba(10, 54, 157, 0.3);
         }
 
-        /* Data Table & Admin Dashboard */
+        /* Data Table */
         .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
@@ -245,7 +238,7 @@
         .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
         .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
 
-        /* Popup Modal & Star Rating */
+        /* Popup Modal */
         .modal {
             display: none;
             position: fixed;
@@ -265,12 +258,6 @@
             width: 90%;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: modalPop 0.3s ease;
-        }
-
-        @keyframes modalPop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .stars {
@@ -282,26 +269,13 @@
         }
 
         .stars input { display: none; }
+        .stars label { font-size: 35px; color: #DCE4EC; cursor: pointer; }
+        .stars label:hover, .stars label:hover ~ label, .stars input:checked ~ label { color: #FFC107; }
 
-        .stars label {
-            font-size: 35px;
-            color: #DCE4EC;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .stars label:hover,
-        .stars label:hover ~ label,
-        .stars input:checked ~ label {
-            color: #FFC107;
-        }
-
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-tabs { flex-direction: column; }
             .checkbox-grid { grid-template-columns: 1fr; }
             th, td { padding: 10px; font-size: 13px; }
-            .modal-content { padding: 20px; }
         }
     </style>
 </head>
@@ -310,8 +284,8 @@
 <div class="container">
     <header>
         <div class="logo-placeholder">
-    <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 120px; max-width: 100%; object-fit: contain;">
-</div>
+            <img src="logo.png" alt="PR Service plus+ Logo" style="max-height: 90px; max-width: 100%; object-fit: contain;">
+        </div>
         <h1>PR Service plus+</h1>
         <p>ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
     </header>
@@ -342,7 +316,6 @@
                     <option value="กองยุทธศาสตร์และงบประมาณ">กองยุทธศาสตร์และงบประมาณ</option>
                     <option value="กองการศึกษา">กองการศึกษา</option>
                     <option value="กองสวัสดิการสังคม">กองสวัสดิการสังคม</option>
-                    <option value="หน่วยตรวจสอบภายใน">หน่วยตรวจสอบภายใน</option>
                 </select>
             </div>
             <div class="form-group">
@@ -366,14 +339,14 @@
                 <textarea id="staffDetails" rows="4" placeholder="ระบุรายละเอียดงานประชาสัมพันธ์เพิ่มเติม..."></textarea>
             </div>
             <div class="form-group">
-                <label>แนบลิงก์ไฟล์ (เช่น Google Drive, OneDrive - ถ้ามี)</label>
-                <input type="text" id="staffFileLink" placeholder="https://drive.google.com/...">
+                <label>อัปเดต! แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ (ไม่เกิน 10MB)</label>
+                <input type="file" id="staffFile" accept="image/*, .pdf, .doc, .docx, .xls, .xlsx">
             </div>
             <div class="form-group">
                 <label>อีเมลสำหรับแจ้งอัปเดตสถานะ (ไม่บังคับ)</label>
                 <input type="email" id="staffEmail" placeholder="example@gmail.com">
             </div>
-            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ</button>
+            <button type="submit" class="btn" id="staffSubmitBtn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ</button>
         </form>
     </div>
 
@@ -394,14 +367,14 @@
                 <textarea id="pubDetails" rows="4" required placeholder="กรอกรายละเอียดเรื่องที่ต้องการให้ประชาสัมพันธ์"></textarea>
             </div>
             <div class="form-group">
-                <label>แนบลิงก์ไฟล์เพิ่มเติม (ถ้ามี)</label>
-                <input type="text" id="pubFileLink" placeholder="https://...">
+                <label>อัปเดต! แนบไฟล์รูปภาพ หรือเอกสารขอความอนุเคราะห์ (ไม่เกิน 10MB)</label>
+                <input type="file" id="pubFile" accept="image/*, .pdf, .doc, .docx">
             </div>
             <div class="form-group">
                 <label>อีเมลสำหรับแจ้งอัปเดตสถานะ (ไม่บังคับ)</label>
                 <input type="email" id="pubEmail" placeholder="example@gmail.com">
             </div>
-            <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์</button>
+            <button type="submit" class="btn" id="pubSubmitBtn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์</button>
         </form>
     </div>
 
@@ -421,7 +394,7 @@
                         <th>สังกัด/เบอร์โทร</th>
                         <th>งานที่ขอใช้บริการ / รายละเอียด</th>
                         <th>วันเวลานัดหมาย</th>
-                        <th>ลิงก์ไฟล์</th>
+                        <th>ไฟล์แนบ</th>
                         <th>ความพึงพอใจ</th>
                         <th>สถานะ</th>
                     </tr>
@@ -455,10 +428,11 @@
                         <th>วัน/เวลาทำรายการ</th>
                         <th>ผู้ขอใช้</th>
                         <th>ข้อมูลติดต่อ/สังกัด</th>
-                        <th>วันเวลานัดหมาย</th> <th>รายละเอียดงาน</th>
-                        <th>ลิงก์</th>
+                        <th>วันเวลานัดหมาย</th>
+                        <th>รายละเอียดงาน</th>
+                        <th>ไฟล์แนบจากระบบ</th>
                         <th>สถานะปัจจุบัน</th>
-                        <th>จัดการสถานะ (เชื่อมโยง Google Sheet)</th>
+                        <th>จัดการสถานะ</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody">
@@ -471,16 +445,16 @@
 <div id="satisfactionModal" class="modal">
     <div class="modal-content">
         <h2 style="color: var(--status-approve);"><i class="fa-solid fa-circle-check"></i> ส่งคำขอเรียบร้อยแล้ว!</h2>
-        <p style="margin-top: 10px;">กองยุทธศาสตร์และงบประมาณ ได้รับข้อมูลของท่านแล้ว</p>
+        <p style="margin-top: 10px;">ระบบทำการบันทึกข้อมูลและอัปโหลดไฟล์ของท่านลง Google Drive แล้ว</p>
         <p style="font-size: 14px; color: var(--text-light); margin-top: 5px;">โปรดประเมินความพึงพอใจในการใช้บริการผ่านระบบออนไลน์</p>
         
         <form id="ratingForm" onsubmit="submitRating(event)">
             <div class="stars">
-                <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="มากที่สุด (5 ดาว)">★</label>
-                <input type="radio" id="star4" name="rating" value="4"/><label for="star4" title="มาก (4 ดาว)">★</label>
-                <input type="radio" id="star3" name="rating" value="3"/><label for="star3" title="ปานกลาง (3 ดาว)">★</label>
-                <input type="radio" id="star2" name="rating" value="2"/><label for="star2" title="น้อย (2 ดาว)">★</label>
-                <input type="radio" id="star1" name="rating" value="1"/><label for="star1" title="น้อยที่สุด (1 ดาว)">★</label>
+                <input type="radio" id="star5" name="rating" value="5" required/><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4"/><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3"/><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2"/><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1"/><label for="star1">★</label>
             </div>
             <button type="submit" class="btn"><i class="fa-solid fa-star"></i> บันทึกและเสร็จสิ้น</button>
         </form>
@@ -488,27 +462,16 @@
 </div>
 
 <script>
-    /* --- JAVASCRIPT LOGIC SECTION --- */
     // URL เว็บแอปของ Google Apps Script
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxXYIqpIv5U8U7HkL90_vVOBM1S9eijkqpz-TUDJpJmFCKQuHyKCqccOdT9cFCS9xs/exec"; 
-    
+    const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; 
     let currentSubmittedRowId = null; 
 
     function switchTab(tabName) {
         document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
         document.querySelectorAll('.nav-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
-        
         const targetTab = document.getElementById(`${tabName}-tab`);
         if (targetTab) targetTab.classList.add('active');
-        
-        const activeBtn = Array.from(document.querySelectorAll('.nav-tabs .tab-btn')).find(btn => btn.innerText.includes(
-            tabName === 'staff' ? 'เจ้าหน้าที่' : tabName === 'public' ? 'ประชาชน' : tabName === 'tracking' ? 'ติดตามสถานะ' : 'ผู้ดูแลระบบ'
-        ));
-        if (activeBtn) activeBtn.classList.add('active');
-
-        if (tabName === 'tracking') {
-            fetchDataRealtime();
-        }
+        if (tabName === 'tracking') fetchDataRealtime();
     }
 
     function loginAdmin() {
@@ -518,7 +481,7 @@
             document.getElementById('admin-dashboard-tab').classList.add('active');
             fetchDataRealtime();
         } else {
-            alert('รหัสผ่านแอดมินไม่ถูกต้อง! กรุณาลองใหม่อีกครั้ง');
+            alert('รหัสผ่านแอดมินไม่ถูกต้อง!');
         }
     }
 
@@ -528,115 +491,133 @@
         document.getElementById('adminPassword').value = '';
     }
 
-    function handleFormSubmit(event, userType) {
+    // ฟังก์ชันแปลงไฟล์เป็น Base64 เพื่อส่งเข้า Google Drive
+    function getFileData(fileInput) {
+        return new Promise((resolve, reject) => {
+            const file = fileInput.files[0];
+            if (!file) { resolve(null); return; }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64String = reader.result.split(',')[1];
+                resolve({
+                    base64: base64String,
+                    name: file.name,
+                    mimeType: file.type
+                });
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function handleFormSubmit(event, userType) {
         event.preventDefault();
         
+        // แสดง Loading ป้องกันปุ่มกดซ้ำระหว่างอัปโหลดไฟล์
+        const submitBtn = userType === 'เจ้าหน้าที่' ? document.getElementById('staffSubmitBtn') : document.getElementById('pubSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปโหลดไฟล์และส่งข้อมูล...';
+
         let formData = {
-            action: 'createRequest',
-            timestamp: new Date().toLocaleString('th-TH'),
-            userType: userType,
-            status: 'รอดำเนินการ',
-            rating: '-'
+          action: 'createRequest',
+          timestamp: new Date().toLocaleString('th-TH'),
+          userType: userType,
+          status: 'รอดำเนินการ',
+          rating: '-'
         };
 
-        if (userType === 'เจ้าหน้าที่') {
-            const checkedPr = Array.from(document.querySelectorAll('input[name="prType"]:checked')).map(el => el.value);
-            if (checkedPr.length === 0) {
-                alert('กรุณาเลือกประเภทงาน PR อย่างน้อย 1 ข้อ');
-                return;
+        try {
+            if (userType === 'เจ้าหน้าที่') {
+                const checkedPr = Array.from(document.querySelectorAll('input[name="prType"]:checked')).map(el => el.value);
+                if (checkedPr.length === 0) { alert('กรุณาเลือกประเภทงาน PR'); submitBtn.disabled = false; return; }
+                
+                formData.name = document.getElementById('staffName').value;
+                formData.contact = document.getElementById('staffDivision').value;
+                formData.prType = checkedPr.join(', ');
+                formData.dateTime = new Date(document.getElementById('staffDateTime').value).toLocaleString('th-TH');
+                formData.details = document.getElementById('staffDetails').value;
+                formData.email = document.getElementById('staffEmail').value;
+                
+                // ดึงไฟล์แนบ
+                let fileObj = await getFileData(document.getElementById('staffFile'));
+                if(fileObj) {
+                    formData.fileData = fileObj.base64;
+                    formData.fileName = fileObj.name;
+                    formData.fileMimeType = fileObj.mimeType;
+                }
+                document.getElementById('staffForm').reset();
+            } else {
+                formData.name = document.getElementById('pubName').value;
+                formData.contact = document.getElementById('pubPhone').value;
+                formData.prType = 'งานความอนุเคราะห์ประชาสัมพันธ์ทั่วไป';
+                formData.dateTime = '- (ตกลงตามหน้างาน)';
+                formData.details = document.getElementById('pubDetails').value;
+                formData.email = document.getElementById('pubEmail').value;
+                
+                // ดึงไฟล์แนบ
+                let fileObj = await getFileData(document.getElementById('pubFile'));
+                if(fileObj) {
+                    formData.fileData = fileObj.base64;
+                    formData.fileName = fileObj.name;
+                    formData.fileMimeType = fileObj.mimeType;
+                }
+                document.getElementById('publicForm').reset();
             }
-            formData.name = document.getElementById('staffName').value;
-            formData.contact = document.getElementById('staffDivision').value;
-            formData.prType = checkedPr.join(', ');
-            formData.dateTime = new Date(document.getElementById('staffDateTime').value).toLocaleString('th-TH');
-            formData.details = document.getElementById('staffDetails').value;
-            formData.fileLink = document.getElementById('staffFileLink').value;
-            formData.email = document.getElementById('staffEmail').value;
-            document.getElementById('staffForm').reset();
-        } else {
-            formData.name = document.getElementById('pubName').value;
-            formData.contact = document.getElementById('pubPhone').value;
-            formData.prType = 'งานความอนุเคราะห์ประชาสัมพันธ์ทั่วไป';
-            formData.dateTime = '- (ตกลงตามหน้างาน)';
-            formData.details = document.getElementById('pubDetails').value;
-            formData.fileLink = document.getElementById('pubFileLink').value;
-            formData.email = document.getElementById('pubEmail').value;
-            document.getElementById('publicForm').reset();
+
+            currentSubmittedRowId = 'ROW_' + Date.now();
+            formData.rowId = currentSubmittedRowId;
+
+            // ส่งข้อมูลหลังบ้าน
+            await sendDataToAppsScript(formData);
+            
+            // เปิดโมดอลให้ประเมินดาว
+            document.getElementById('satisfactionModal').style.display = 'flex';
+        } catch (err) {
+            alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = userType === 'เจ้าหน้าที่' ? '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ' : '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์';
         }
-
-        currentSubmittedRowId = 'ROW_' + Date.now();
-        formData.rowId = currentSubmittedRowId;
-
-        document.getElementById('satisfactionModal').style.display = 'flex';
-        sendDataToAppsScript(formData);
     }
 
     function submitRating(event) {
         event.preventDefault();
         const selectedRating = document.querySelector('input[name="rating"]:checked').value;
-        
         sendDataToAppsScript({
             action: 'submitRating',
             rowId: currentSubmittedRowId,
             rating: selectedRating + " ดาว"
         });
-
         document.getElementById('satisfactionModal').style.display = 'none';
         document.getElementById('ratingForm').reset();
         switchTab('tracking');
     }
 
     function sendDataToAppsScript(data) {
-        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) {
-            let cached = JSON.parse(localStorage.getItem('pr_requests')) || [];
-            if(data.action === 'createRequest') {
-                cached.unshift(data);
-            } else if(data.action === 'submitRating') {
-                let row = cached.find(r => r.rowId === data.rowId);
-                if(row) row.rating = data.rating;
-            } else if(data.action === 'updateStatus') {
-                let row = cached.find(r => r.rowId === data.rowId);
-                if(row) row.status = data.status;
-            } else if(data.action === 'delete') {
-                cached = cached.filter(r => r.rowId !== data.rowId);
-            }
-            localStorage.setItem('pr_requests', JSON.stringify(cached));
-            renderTableHTML(cached);
-            return;
-        }
-
-        fetch(WEB_APP_URL, {
+        return fetch(WEB_APP_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }).then(() => {
             fetchDataRealtime();
-        }).catch(err => console.error("Error communication with Sheets API:", err));
+        });
     }
 
     function fetchDataRealtime() {
         document.getElementById('lastUpdateText').innerText = "อัปเดตล่าสุดเมื่อ: " + new Date().toLocaleString('th-TH');
-        
-        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) {
-            let cached = JSON.parse(localStorage.getItem('pr_requests')) || [];
-            renderTableHTML(cached);
-            return;
-        }
+        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) return;
 
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
-        .then(data => {
-            renderTableHTML(data);
-        });
+        .then(data => renderTableHTML(data))
+        .catch(err => console.error("Error loading data:", err));
     }
 
     function renderTableHTML(dataList) {
         const userBody = document.getElementById('userTableBody');
         const adminBody = document.getElementById('adminTableBody');
-        
-        userBody.innerHTML = '';
-        adminBody.innerHTML = '';
+        userBody.innerHTML = ''; adminBody.innerHTML = '';
 
         if(dataList.length === 0) {
             userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
@@ -644,58 +625,40 @@
             return;
         }
 
-        // ฟังก์ชันภายในสำหรับแปลง Date String ใดๆ ให้เป็น วัน/เดือน/ปี เวลา
         function formatThaiDateTime(inputStr) {
             if (!inputStr || inputStr === '-') return '-';
-            // ถ้าเป็นข้อความอธิบายของประชาชน ไม่ต้องแปลง ให้ส่งกลับไปเลย
             if (inputStr.includes('ตกลงตามหน้างาน')) return inputStr; 
-            
             try {
                 let dateObj = new Date(inputStr);
-                // ถ้าค่าดั้งเดิมมีคำว่า พ.ศ. หรือถูกแปลงผิดพลาด ให้ลองล้างข้อมูลเบื้องต้น
                 if (isNaN(dateObj.getTime())) {
-                    // ปรับแต่งกรณีมีเครื่องหมายที่ไม่รองรับ
                     let cleanStr = inputStr.replace(/(\d{4})\/(\d{2})\/(\d{2})/, '$1-$2-$3');
                     dateObj = new Date(cleanStr);
                 }
-
                 if (!isNaN(dateObj.getTime())) {
                     let day = String(dateObj.getDate()).padStart(2, '0');
                     let month = String(dateObj.getMonth() + 1).padStart(2, '0');
                     let year = dateObj.getFullYear();
-                    
-                    // ป้องกันปัญหาเรื่องปี พ.ศ. เกินในระบบคอมพิวเตอร์
                     if (year > 2500) year = year - 543; 
-
                     let hours = String(dateObj.getHours()).padStart(2, '0');
                     let minutes = String(dateObj.getMinutes()).padStart(2, '0');
-                    
-                    // ถ้าไม่มีการระบุเวลา (เป็น 00:00) ให้แสดงแค่วันที่อย่างเดียว
-                    if (hours === '00' && minutes === '00' && dateObj.getSeconds() === 0) {
-                        return `${day}/${month}/${year}`;
-                    }
-                    
+                    if (hours === '00' && minutes === '00') return `${day}/${month}/${year}`;
                     return `${day}/${month}/${year} ${hours}:${minutes} น.`;
                 }
-            } catch (e) {
-                console.error("Error formatting datetime:", e);
-            }
-            return inputStr; // ถ้าแปลงไม่สำเร็จจริงๆ ให้คืนค่าเดิมเพื่อไม่ให้หน้าจอว่างเปล่า
+            } catch (e) {}
+            return inputStr;
         }
 
         dataList.forEach(item => {
-            // --- 1. แปลงวันที่ทำรายการ และ วันเวลานัดหมาย ---
             let displayTimestamp = formatThaiDateTime(item.timestamp);
             let displayDateTime = formatThaiDateTime(item.dateTime);
 
-            // --- 2. เช็คสถานะเพื่อใส่สี Badge ---
             let badgeClass = 'status-pending';
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            let fileHtml = item.fileLink ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);"><i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดไฟล์</a>` : '-';
+            // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
+            let fileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
 
-            // --- 3. แสดงผลตารางฝั่งผู้ใช้งานทั่วไป (User) ---
             userBody.innerHTML += `
                 <tr>
                     <td>${displayTimestamp}</td>
@@ -710,7 +673,6 @@
                 </tr>
             `;
 
-            // --- 4. แสดงผลตารางฝั่งผู้ดูแลระบบ (Admin) ---
             adminBody.innerHTML += `
                 <tr>
                     <td>${displayTimestamp}</td>
@@ -727,7 +689,7 @@
                             <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ</option>
                             <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ</option>
                         </select>
-                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;" title="ลบข้อมูล"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `;
@@ -737,28 +699,18 @@
     function changeStatusRealtime(rowId, newStatus, userEmail) {
         if(!newStatus) return;
         if(confirm(`คุณต้องการเปลี่ยนสถานะคำขอนี้เป็น "${newStatus}" ใช่หรือไม่?`)) {
-            sendDataToAppsScript({
-                action: 'updateStatus',
-                rowId: rowId,
-                status: newStatus,
-                email: userEmail
-            });
-            alert('เปลี่ยนสถานะระบบสำเร็จ และระบบจะส่งอีเมลแจ้งเตือนไปยังผู้ใช้ (ถ้ามี)');
+            sendDataToAppsScript({ action: 'updateStatus', rowId: rowId, status: newStatus, email: userEmail })
+            .then(() => alert('เปลี่ยนสถานะระบบสำเร็จ และส่งเมลแจ้งเตือนแล้ว'));
         }
     }
 
     function deleteRequest(rowId) {
-        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบคำขอข้อนี้ออกจากฐานข้อมูลแบบถาวร?')) {
-            sendDataToAppsScript({
-                action: 'delete',
-                rowId: rowId
-            });
+        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบคำขอนี้ออกจากฐานข้อมูลถาวร?')) {
+            sendDataToAppsScript({ action: 'delete', rowId: rowId });
         }
     }
 
-    window.onload = function() {
-        fetchDataRealtime();
-    };
+    window.onload = function() { fetchDataRealtime(); };
 </script>
 </body>
 </html>
