@@ -722,9 +722,9 @@
                     <td>
                         <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
                             <option value="">--เปลี่ยนสถานะ--</option>
-                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ (สีส้ม)</option>
-                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ (สีเขียว)</option>
-                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ (สีแดง)</option>
+                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option>
+                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ</option>
+                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ</option>
                         </select>
                         <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;" title="ลบข้อมูล"><i class="fa-solid fa-trash"></i></button>
                     </td>
