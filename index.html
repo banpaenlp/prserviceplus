@@ -690,7 +690,7 @@
             // --- 2. เช็คสถานะเพื่อใส่สี Badge ---
             let badgeClass = 'status-pending';
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
-            if(item.status === 'ไม่นุมัติ') badgeClass = 'status-reject';
+            if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
             let fileHtml = item.fileLink ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);"><i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดไฟล์</a>` : '-';
 
@@ -724,7 +724,7 @@
                             <option value="">--เปลี่ยนสถานะ--</option>
                             <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ (สีส้ม)</option>
                             <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ (สีเขียว)</option>
-                            <option value="ไม่นุมัติ" ${item.status==='ไม่นุมัติ'?'selected':''}>ไม่นุมัติ (สีแดง)</option>
+                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ (สีแดง)</option>
                         </select>
                         <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;" title="ลบข้อมูล"><i class="fa-solid fa-trash"></i></button>
                     </td>
