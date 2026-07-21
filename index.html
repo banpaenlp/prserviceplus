@@ -653,7 +653,7 @@
             // ตารางฝั่งผู้ใช้งานทั่วไป
             userBody.innerHTML += `
                 <tr>
-                    <td>${item.timestamp}</td>
+                    <td>${displayTimestamp}</td>
                     <td><b>${item.userType}</b></td>
                     <td>${item.name}</td>
                     <td>${item.contact}</td>
@@ -668,7 +668,7 @@
             // ตารางฝั่งแอดมิน (อัปเดตเพิ่มคอลัมน์แสดงข้อมูล วันเวลานัดหมาย เรียบร้อยแล้ว)
             adminBody.innerHTML += `
                 <tr>
-                    <td>${item.timestamp}</td>
+                    <td>${displayTimestamp}</td>
                     <td>[${item.userType}] <b>${item.name}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
                     <td>${item.contact}</td>
                     <td><b style="color:var(--primary-blue);">${item.dateTime}</b></td>
