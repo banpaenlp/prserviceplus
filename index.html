@@ -340,7 +340,7 @@
                 <textarea id="staffDetails" rows="4" placeholder="ระบุรายละเอียดงานประชาสัมพันธ์เพิ่มเติม..."></textarea>
             </div>
             <div class="form-group">
-                <label>อัปเดต! แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ (ไม่เกิน 10MB)</label>
+                <label>แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ (ไม่เกิน 10MB)</label>
                 <input type="file" id="staffFile" accept="image/*, .pdf, .doc, .docx, .xls, .xlsx">
             </div>
             <div class="form-group">
@@ -368,7 +368,7 @@
                 <textarea id="pubDetails" rows="4" required placeholder="กรอกรายละเอียดเรื่องที่ต้องการให้ประชาสัมพันธ์"></textarea>
             </div>
             <div class="form-group">
-                <label>อัปเดต! แนบไฟล์รูปภาพ หรือเอกสารขอความอนุเคราะห์ (ไม่เกิน 10MB)</label>
+                <label>แนบไฟล์รูปภาพ หรือเอกสารประกอบ (ไม่เกิน 10MB)</label>
                 <input type="file" id="pubFile" accept="image/*, .pdf, .doc, .docx">
             </div>
             <div class="form-group">
@@ -657,8 +657,20 @@
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
-            let fileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
+           // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
+            // ของแอดมิน: ให้แสดงลิงก์ดาวน์โหลดปกติ
+            let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
+            
+            // ของประชาชนทั่วไป: แสดงแค่ไอคอนข้อความว่ามีไฟล์แนบ ไม่สามารถคลิกกดลิงก์ได้
+            let userFileHtml = '-';
+            if (item.fileLink && item.fileLink !== '-') {
+                // ตรวจสอบเพิ่มว่าไม่ใช่ข้อความแจ้งเตือน Error
+                if (!item.fileLink.includes("เกิดข้อผิดพลาด") && !item.fileLink.includes("ไม่มีการส่งข้อมูล")) {
+                    userFileHtml = `<span style="color:var(--text-dark); font-weight:500;" title="มีไฟล์เอกสารแนบในระบบแล้ว"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>`;
+                } else {
+                    userFileHtml = `-`;
+                }
+            }
 
             userBody.innerHTML += `
                 <tr>
@@ -668,9 +680,30 @@
                     <td>${item.contact}</td>
                     <td><u>${item.prType}</u><br><small style="color:gray;">${item.details || ''}</small></td>
                     <td><strong>${displayDateTime}</strong></td>
-                    <td>${fileHtml}</td>
+                    <td>${userFileHtml}</td>
                     <td style="color:#FFC107; font-weight:bold;">${item.rating}</td>
                     <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                </tr>
+            `;
+
+            adminBody.innerHTML += `
+                <tr>
+                    <td>${displayTimestamp}</td>
+                    <td>[${item.userType}] <b>${item.name}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
+                    <td>${item.contact}</td>
+                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
+                    <td><u>${item.prType}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating}</span></td>
+                    <td>${adminFileHtml}</td>
+                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                    <td>
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
+                            <option value="">--เปลี่ยนสถานะ--</option>
+                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option>
+                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ</option>
+                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ</option>
+                        </select>
+                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
                 </tr>
             `;
 
