@@ -505,23 +505,22 @@ header::before {
     let currentSubmittedRowId = null; 
 
     function switchTab(tabName) {
-    // 1. ซ่อนการ์ดฟอร์มทุกหน้าก่อน
-    document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-    
-    // 2. ล้างสถานะสีเข้มออกจากทุกปุ่ม
-    document.querySelectorAll('.nav-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // 3. แสดงฟอร์มหน้าที่เลือก
-    const targetTab = document.getElementById(`${tabName}-tab`);
-    if (targetTab) targetTab.classList.add('active');
-    
-    // 4. ค้นหาปุ่มที่กดคลิก แล้วสั่งให้เปลี่ยนสีค้างไว้ (Active)
-    // ค้นหาผ่านฟังก์ชัน onclick ที่ระบุชื่อแท็บนั้นๆ
-    const targetBtn = Array.from(document.querySelectorAll('.nav-tabs .tab-btn')).find(btn => btn.getAttribute('onclick').includes(`'${tabName}'`));
-    if (targetBtn) targetBtn.classList.add('active');
-    
-    if (tabName === 'tracking') fetchDataRealtime();
-}
+        // 1. ซ่อนการ์ดฟอร์มทุกหน้าก่อน
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        
+        // 2. ล้างสถานะสีเข้มออกจากทุกปุ่ม
+        document.querySelectorAll('.nav-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        // 3. แสดงฟอร์มหน้าที่เลือก
+        const targetTab = document.getElementById(`${tabName}-tab`);
+        if (targetTab) targetTab.classList.add('active');
+        
+        // 4. ค้นหาปุ่มที่กดคลิก แล้วสั่งให้เปลี่ยนสีค้างไว้ (Active)
+        const targetBtn = Array.from(document.querySelectorAll('.nav-tabs .tab-btn')).find(btn => btn.getAttribute('onclick').includes(`'${tabName}'`));
+        if (targetBtn) targetBtn.classList.add('active');
+        
+        if (tabName === 'tracking') fetchDataRealtime();
+    }
 
     function loginAdmin() {
         const pass = document.getElementById('adminPassword').value;
@@ -659,7 +658,11 @@ header::before {
 
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
-        .then(data => renderTableHTML(data))
+        .then(data => {
+            // 🔄 ทำการกลับหัวข้อมูลทั้งหมดเพื่อให้แถวที่ส่งเข้ามาใหม่ล่าสุด ขึ้นไปแสดงบนสุด
+            const reversedData = [...data].reverse();
+            renderTableHTML(reversedData);
+        })
         .catch(err => console.error("Error loading data:", err));
     }
 
@@ -705,18 +708,13 @@ header::before {
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-           // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
-            // ของแอดมิน: ให้แสดงลิงก์ดาวน์โหลดปกติ
+            // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
             let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
             
-            // ของประชาชนทั่วไป: แสดงแค่ไอคอนข้อความว่ามีไฟล์แนบ ไม่สามารถคลิกกดลิงก์ได้
             let userFileHtml = '-';
             if (item.fileLink && item.fileLink !== '-') {
-                // ตรวจสอบเพิ่มว่าไม่ใช่ข้อความแจ้งเตือน Error
                 if (!item.fileLink.includes("เกิดข้อผิดพลาด") && !item.fileLink.includes("ไม่มีการส่งข้อมูล")) {
                     userFileHtml = `<span style="color:var(--text-dark); font-weight:500;" title="มีไฟล์เอกสารแนบในระบบแล้ว"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>`;
-                } else {
-                    userFileHtml = `-`;
                 }
             }
 
@@ -754,27 +752,6 @@ header::before {
                     </td>
                 </tr>
             `;
-
-            adminBody.innerHTML += `
-                <tr>
-                    <td>${displayTimestamp}</td>
-                    <td>[${item.userType}] <b>${item.name}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
-                    <td>${item.contact}</td>
-                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
-                    <td><u>${item.prType}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating}</span></td>
-                    <td>${fileHtml}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
-                    <td>
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
-                            <option value="">--เปลี่ยนสถานะ--</option>
-                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option>
-                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ</option>
-                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ</option>
-                        </select>
-                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `;
         });
     }
 
@@ -791,6 +768,9 @@ header::before {
             sendDataToAppsScript({ action: 'delete', rowId: rowId });
         }
     }
+
+    // ⏰ ตั้งค่าระบบดึงข้อมูลแบบเรียลไทม์อัตโนมัติในพื้นหลัง ทุกๆ 10 วินาที
+    setInterval(fetchDataRealtime, 10000);
 
     window.onload = function() { fetchDataRealtime(); };
 </script>
