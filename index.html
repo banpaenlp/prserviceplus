@@ -636,6 +636,7 @@
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
         .then(data => {
+            // ทำการกลับหัวอาเรย์ข้อมูล (Reverse) ก่อนส่งเข้าไป Render ในตาราง เพื่อการันตีข้อมูลล่าสุดอยู่บนสุดแน่นอน
             const reversedData = [...data].reverse();
             renderTableHTML(reversedData);
         })
@@ -653,20 +654,38 @@
             return;
         }
 
+        // ฟังก์ชันช่วยจัดฟอร์แมตวันที่แบบไทย
         function formatThaiDateTime(inputStr) {
             if (!inputStr || inputStr === '-') return '-';
             if (inputStr.includes('ตกลงตามหน้างาน')) return inputStr; 
             try {
-                let dateObj = new Date(inputStr);
-                if (isNaN(dateObj.getTime())) {
-                    let cleanStr = inputStr.replace(/(\d{4})\/(\d{2})\/(\d{2})/, '$1-$2-$3');
-                    dateObj = new Date(cleanStr);
+                // ถ้าเป็นฟอร์แมตภาษาไทยของเดิมที่บันทึกไว้ ให้ทำความสะอาดก่อนแปลงเป็น Date Object
+                let cleanStr = inputStr.replace(/ น\./g, '').replace(/ น$/g, '');
+                
+                // แยกกรณีเป็นวันที่แบบระบบไทย เช่น 23/07/2569
+                if (cleanStr.includes('/')) {
+                    let parts = cleanStr.split(' ');
+                    let dateParts = parts[0].split('/');
+                    if (dateParts.length === 3) {
+                        let day = dateParts[0];
+                        let month = dateParts[1];
+                        let year = parseInt(dateParts[2]);
+                        if (year > 2500) year = year - 543; // แปลง พ.ศ. เป็น ค.ศ. ชั่วคราวเพื่อให้คอมเข้าใจ
+                        
+                        let timeStr = parts[1] ? parts[1].replace('.', ':') : '00:00';
+                        cleanStr = `${year}-${month}-${day}T${timeStr}`;
+                    }
                 }
+
+                let dateObj = new Date(cleanStr);
                 if (!isNaN(dateObj.getTime())) {
                     let day = String(dateObj.getDate()).padStart(2, '0');
                     let month = String(dateObj.getMonth() + 1).padStart(2, '0');
                     let year = dateObj.getFullYear();
-                    if (year > 2500) year = year - 543; 
+                    
+                    // ปรับแสดงผลเป็นปี พ.ศ. (บวก 543 เสมอเมื่อแสดงบนหน้าจอ)
+                    if (year < 2500) year = year + 543; 
+                    
                     let hours = String(dateObj.getHours()).padStart(2, '0');
                     let minutes = String(dateObj.getMinutes()).padStart(2, '0');
                     if (hours === '00' && minutes === '00') return `${day}/${month}/${year}`;
@@ -755,6 +774,8 @@
         });
     }
 
+    // สั่งให้ระบบเรียกข้อมูลครั้งแรกทันทีที่โหลดหน้าเว็บ
+    fetchDataRealtime();
     // สั่งให้ระบบอัปเดตข้อมูลอัตโนมัติทุก ๆ 10 วินาที (Real-time Sync)
     setInterval(fetchDataRealtime, 10000);
 </script>
