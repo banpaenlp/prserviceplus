@@ -46,25 +46,74 @@
             padding: 20px;
         }
 
-        header {
-            background: linear-gradient(-45deg, #062875, #0A369D, #4A90E2, #0A369D);
-            background-size: 400% 400%;
-            color: white;
-            padding: 30px 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
-            margin-bottom: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            animation: digitalWave 12s ease infinite;
-        }
+        /* --- สำเนาโค้ด CSS สำหรับแบนเนอร์ส่วนหัวแบบสมาร์ทดิจิทัล --- */
 
-        @keyframes digitalWave {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+/* 1. ส่วนควบคุมสไตล์หลักของ Header */
+header {
+    /* เปลี่ยนเป็น Smart Blue Gradient 4 สี */
+    background: linear-gradient(-45deg, #062875, #0A369D, #1E88E5, #0A369D);
+    background-size: 400% 400%; /* ขยายขนาดเพื่อให้ Gradient เคลื่อนที่ได้ */
+    color: white;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative; /* สำคัญสำหรับ Pseudo-elements */
+    overflow: hidden; /* ซ่อนส่วนที่ล้นออกไป */
+    
+    /* อนิเมชั่นฉากหลังเคลื่อนที่นุ่มนวล (ลื่นไหล) */
+    animation: digitalBackgroundWave 15s ease infinite;
+}
+
+/* 2. ลำแสงดิจิทัลวิ่งตัดผ่าน ( Frequency Pulse - ถี่และเร็ว) */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    /* ลำแสงสีขาวขุ่นบางๆ Skew เอียง */
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-25deg);
+    
+    /* อนิเมชั่นลำแสงวิ่งเร็ว (ถี่) */
+    animation: digitalLightPulse 6s ease-in-out infinite;
+}
+
+/* 3. อนุภาคแสงดิจิทัลลอยตัว (Digital Particles - เรียบหรู) */
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: -20px; width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(74, 144, 226, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    
+    /* อนิเมชั่นอนุภาคแสงค่อยๆ ปรากฏ (ลื่นไหล) */
+    animation: digitalParticleFade 8s ease-in-out infinite;
+}
+
+/* 🎬 ส่วนควบคุม Keyframe Animations */
+
+/* อนิเมชั่น 1: ฉากหลัง Gradient เคลื่อนที่ */
+@keyframes digitalBackgroundWave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* อนิเมชั่น 2: ลำแสงวิ่งตัดผ่าน (ถี่และเร็ว) */
+@keyframes digitalLightPulse {
+    0% { left: -100%; }
+    20% { left: 150%; } /* วิ่งผ่านอย่างเร็วภายใน 20% ของเวลา */
+    100% { left: 150%; } /* หยุดรอที่ปลายทางก่อนเริ่มใหม่ */
+}
+
+/* อนิเมชั่น 3: อนุภาคแสงค่อยๆ ปรากฏและขยาย */
+@keyframes digitalParticleFade {
+    0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); }
+    50% { opacity: 1; transform: scale(1.2) translateY(-20px); }
+}
+
+/* --- สิ้นสุดโค้ด CSS สำหรับแบนเนอร์ --- */
 
         .logo-placeholder {
             width: 100%;
