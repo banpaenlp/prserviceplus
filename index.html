@@ -594,6 +594,50 @@
             return;
         }
 
+        // เพิ่มฟังก์ชันภายในเพื่อช่วยแปลง ISO String หรือรูปแบบวันที่ดิบให้เป็นแบบไทยที่ถูกต้อง
+        function formatToThaiStyle(dateStr) {
+            if (!dateStr || dateStr === '-') return '-';
+            if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
+            
+            try {
+                // กรณีที่เป็นรูปแบบ ISO String เช่น 2569-07-23T03:04:50.000Z
+                if (dateStr.includes('T') && dateStr.includes('Z')) {
+                    let parts = dateStr.split('T');
+                    let dateParts = parts[0].split('-'); // [2569, 07, 23]
+                    let timeParts = parts[1].split(':'); // [03, 04, 50...]
+                    
+                    if (dateParts.length === 3) {
+                        let year = dateParts[0];
+                        let month = dateParts[1];
+                        let day = dateParts[2];
+                        let hr = timeParts[0];
+                        let min = timeParts[1];
+                        
+                        // ในระบบหลังบ้าน ถ้าเวลาถูกแปลงเป็น GMT (ช้ากว่าไทย 7 ชม.) 
+                        // เราจะทำการปรับชั่วโมงให้เป็นเวลาไทย (+7)
+                        let hourInt = parseInt(hr) + 7;
+                        if (hourInt >= 24) {
+                            hourInt = hourInt - 24;
+                            let dayInt = parseInt(day) + 1;
+                            day = String(dayInt).padStart(2, '0');
+                        }
+                        hr = String(hourInt).padStart(2, '0');
+                        
+                        return `${day}/${month}/${year} ${hr}:${min} น.`;
+                    }
+                }
+                
+                // กรณีที่มาเป็นรูปแบบไทยอยู่แล้วหรือปรับแต่งเพิ่มเติม ให้จัดแต่งให้มีคำว่า "น." ต่อท้าย
+                let cleanStr = dateStr.toString().trim();
+                if (cleanStr.includes('/') && !cleanStr.includes('น.')) {
+                    return cleanStr + ' น.';
+                }
+                return cleanStr;
+            } catch (e) {
+                return dateStr; // หากแปลงไม่สำเร็จให้ส่งค่าเดิมกลับไปเพื่อป้องกันหน้าจอขาว
+            }
+        }
+
         dataList.forEach(item => {
             let badgeClass = 'status-pending';
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
@@ -602,14 +646,18 @@
             let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
             let userFileHtml = (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("ข้อผิดพลาด")) ? `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>` : '-';
 
+            // ใช้ฟังก์ชันแปลงรูปแบบวันที่ก่อนนำไปแสดงผลบนตาราง
+            let displayTimestamp = formatToThaiStyle(item.timestamp);
+            let displayDateTime = formatToThaiStyle(item.dateTime);
+
             userBody.innerHTML += `
                 <tr>
-                    <td>${item.timestamp || '-'}</td>
+                    <td>${displayTimestamp}</td>
                     <td><b>${item.userType || '-'}</b></td>
                     <td>${item.name || '-'}</td>
                     <td>${item.contact || '-'}</td>
                     <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                    <td><strong>${item.dateTime || '-'}</strong></td>
+                    <td><strong>${displayDateTime}</strong></td>
                     <td>${userFileHtml}</td>
                     <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
                     <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
@@ -618,10 +666,10 @@
 
             adminBody.innerHTML += `
                 <tr>
-                    <td>${item.timestamp || '-'}</td>
+                    <td>${displayTimestamp}</td>
                     <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
                     <td>${item.contact || '-'}</td>
-                    <td><b style="color:var(--primary-blue);">${item.dateTime || '-'}</b></td>
+                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
                     <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
                     <td>${adminFileHtml}</td>
                     <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
