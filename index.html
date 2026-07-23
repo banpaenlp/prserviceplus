@@ -584,107 +584,124 @@
     }
 
     function renderTableHTML(dataList) {
-        const userBody = document.getElementById('userTableBody');
-        const adminBody = document.getElementById('adminTableBody');
-        userBody.innerHTML = ''; adminBody.innerHTML = '';
+    const userBody = document.getElementById('userTableBody');
+    const adminBody = document.getElementById('adminTableBody');
+    userBody.innerHTML = ''; adminBody.innerHTML = '';
 
-        if(!dataList || dataList.length === 0) {
-            userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
-            adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
-            return;
-        }
+    if(!dataList || dataList.length === 0) {
+        userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+        adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+        return;
+    }
 
-        // เพิ่มฟังก์ชันภายในเพื่อช่วยแปลง ISO String หรือรูปแบบวันที่ดิบให้เป็นแบบไทยที่ถูกต้อง
-        function formatToThaiStyle(dateStr) {
-            if (!dateStr || dateStr === '-') return '-';
-            if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
-            
-            try {
-                // กรณีที่เป็นรูปแบบ ISO String เช่น 2569-07-23T03:04:50.000Z
-                if (dateStr.includes('T') && dateStr.includes('Z')) {
-                    let parts = dateStr.split('T');
-                    let dateParts = parts[0].split('-'); // [2569, 07, 23]
-                    let timeParts = parts[1].split(':'); // [03, 04, 50...]
-                    
-                    if (dateParts.length === 3) {
-                        let year = dateParts[0];
-                        let month = dateParts[1];
-                        let day = dateParts[2];
-                        let hr = timeParts[0];
-                        let min = timeParts[1];
-                        
-                        // ในระบบหลังบ้าน ถ้าเวลาถูกแปลงเป็น GMT (ช้ากว่าไทย 7 ชม.) 
-                        // เราจะทำการปรับชั่วโมงให้เป็นเวลาไทย (+7)
-                        let hourInt = parseInt(hr) + 7;
-                        if (hourInt >= 24) {
-                            hourInt = hourInt - 24;
-                            let dayInt = parseInt(day) + 1;
-                            day = String(dayInt).padStart(2, '0');
-                        }
-                        hr = String(hourInt).padStart(2, '0');
-                        
-                        return `${day}/${month}/${year} ${hr}:${min} น.`;
-                    }
-                }
+    // ฟังก์ชันช่วยแปลง ISO String หรือรูปแบบวันที่ดิบให้เป็นแบบไทยที่ถูกต้อง
+    function formatToThaiStyle(dateStr) {
+        if (!dateStr || dateStr === '-') return '-';
+        if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
+        
+        try {
+            if (dateStr.includes('T') && dateStr.includes('Z')) {
+                let parts = dateStr.split('T');
+                let dateParts = parts[0].split('-'); 
+                let timeParts = parts[1].split(':'); 
                 
-                // กรณีที่มาเป็นรูปแบบไทยอยู่แล้วหรือปรับแต่งเพิ่มเติม ให้จัดแต่งให้มีคำว่า "น." ต่อท้าย
-                let cleanStr = dateStr.toString().trim();
-                if (cleanStr.includes('/') && !cleanStr.includes('น.')) {
-                    return cleanStr + ' น.';
+                if (dateParts.length === 3) {
+                    let year = dateParts[0];
+                    let month = dateParts[1];
+                    let day = dateParts[2];
+                    let hr = timeParts[0];
+                    let min = timeParts[1];
+                    
+                    let hourInt = parseInt(hr) + 7;
+                    if (hourInt >= 24) {
+                        hourInt = hourInt - 24;
+                        let dayInt = parseInt(day) + 1;
+                        day = String(dayInt).padStart(2, '0');
+                    }
+                    hr = String(hourInt).padStart(2, '0');
+                    
+                    return `${day}/${month}/${year} ${hr}:${min} น.`;
                 }
-                return cleanStr;
-            } catch (e) {
-                return dateStr; // หากแปลงไม่สำเร็จให้ส่งค่าเดิมกลับไปเพื่อป้องกันหน้าจอขาว
             }
+            
+            let cleanStr = dateStr.toString().trim();
+            if (cleanStr.includes('/') && !cleanStr.includes('น.')) {
+                return cleanStr + ' น.';
+            }
+            return cleanStr;
+        } catch (e) {
+            return dateStr;
         }
+    }
 
-        dataList.forEach(item => {
-            let badgeClass = 'status-pending';
-            if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
-            if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
+    dataList.forEach(item => {
+        let badgeClass = 'status-pending';
+        if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
+        if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
-            let userFileHtml = (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("ข้อผิดพลาด")) ? `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>` : '-';
+        let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
+        let userFileHtml = (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("ข้อผิดพลาด")) ? `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>` : '-';
 
-            // ใช้ฟังก์ชันแปลงรูปแบบวันที่ก่อนนำไปแสดงผลบนตาราง
-            let displayTimestamp = formatToThaiStyle(item.timestamp);
-            let displayDateTime = formatToThaiStyle(item.dateTime);
+        let displayTimestamp = formatToThaiStyle(item.timestamp);
+        let displayDateTime = formatToThaiStyle(item.dateTime);
 
-            userBody.innerHTML += `
-                <tr>
-                    <td>${displayTimestamp}</td>
-                    <td><b>${item.userType || '-'}</b></td>
-                    <td>${item.name || '-'}</td>
-                    <td>${item.contact || '-'}</td>
-                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                    <td><strong>${displayDateTime}</strong></td>
-                    <td>${userFileHtml}</td>
-                    <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
-                </tr>
-            `;
+        userBody.innerHTML += `
+            <tr>
+                <td>${displayTimestamp}</td>
+                <td><b>${item.userType || '-'}</b></td>
+                <td>${item.name || '-'}</td>
+                <td>${item.contact || '-'}</td>
+                <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
+                <td><strong>${displayDateTime}</strong></td>
+                <td>${userFileHtml}</td>
+                <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
+                <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
+            </tr>
+        `;
 
-            adminBody.innerHTML += `
-                <tr>
-                    <td>${displayTimestamp}</td>
-                    <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
-                    <td>${item.contact || '-'}</td>
-                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
-                    <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
-                    <td>${adminFileHtml}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
-                    <td>
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto;">
+        adminBody.innerHTML += `
+            <tr>
+                <td>${displayTimestamp}</td>
+                <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
+                <td>${item.contact || '-'}</td>
+                <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
+                <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
+                <td>${adminFileHtml}</td>
+                <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto; flex-grow: 1;">
                             <option value="">--เปลี่ยนสถานะ--</option>
                             <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
                             <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
                             <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
                         </select>
-                    </td>
-                </tr>
-            `;
-        });
-    }
+                        <button onclick="deleteRequestRealtime('${item.rowId}')" style="background:none; color:crimson; border:none; padding:5px; border-radius:4px; cursor:pointer; font-size:16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="ลบคำขอนี้"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// ฟังก์ชันสำหรับเรียกคำสั่งลบไปยัง Apps Script
+function deleteRequestRealtime(rowId) {
+    if(!rowId) return;
+    if(!confirm('คุณแน่ใจใช่หรือไม่ที่จะลบคำขอนี้ออกจากระบบอย่างถาวร? (ไม่สามารถกู้คืนได้)')) return;
+    
+    fetch(WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'deleteRequest', rowId: rowId })
+    }).then(() => {
+        alert('ลบข้อมูลคำขอเรียบร้อยแล้ว!');
+        fetchDataRealtime();
+    }).catch(err => {
+        alert('เกิดข้อผิดพลาดในการลบ: ' + err);
+        fetchDataRealtime();
+    });
+}
 
     function changeStatusRealtime(rowId, newStatus, userEmail) {
         if(!newStatus) return;
