@@ -629,6 +629,34 @@
         });
     }
 
+    // ฟังก์ชันสำหรับแปลงรูปแบบสตริงใด ๆ ให้กลายเป็นค่าตัวเลข (Millisecond) เพื่อใช้จัดลำดับ
+    function parseStringToMs(dateStr) {
+        if (!dateStr || dateStr === '-') return 0;
+        try {
+            let cleanStr = dateStr.replace(/ น\./g, '').replace(/ น$/g, '').trim();
+            if (cleanStr.includes('/')) {
+                let parts = cleanStr.split(' ');
+                let dateParts = parts[0].split('/');
+                if (dateParts.length === 3) {
+                    let day = parseInt(dateParts[0]);
+                    let month = parseInt(dateParts[1]) - 1;
+                    let year = parseInt(dateParts[2]);
+                    if (year > 2500) year = year - 543; // แปลงกลับเป็น ค.ศ. สำหรับคำนวณ
+                    
+                    let timeParts = parts[1] ? parts[1].replace('.', ':').split(':') : [0, 0];
+                    let hours = parseInt(timeParts[0]) || 0;
+                    let minutes = parseInt(timeParts[1]) || 0;
+                    
+                    return new Date(year, month, day, hours, minutes).getTime();
+                }
+            }
+            let directDate = new Date(cleanStr);
+            return !isNaN(directDate.getTime()) ? directDate.getTime() : 0;
+        } catch(e) {
+            return 0;
+        }
+    }
+
     function fetchDataRealtime() {
         document.getElementById('lastUpdateText').innerText = "อัปเดตล่าสุดเมื่อ: " + new Date().toLocaleString('th-TH');
         if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) return;
@@ -636,9 +664,11 @@
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
         .then(data => {
-            // ทำการกลับหัวอาเรย์ข้อมูล (Reverse) ก่อนส่งเข้าไป Render ในตาราง เพื่อการันตีข้อมูลล่าสุดอยู่บนสุดแน่นอน
-            const reversedData = [...data].reverse();
-            renderTableHTML(reversedData);
+            // ปรับปรุงใหม่: คัดกรองและ Sort ข้อมูลจาก Timestamp โดยเรียงจากค่ามากไปหาน้อย (ล่าสุดอยู่บนสุด) 100%
+            const sortedData = [...data].sort((a, b) => {
+                return parseStringToMs(b.timestamp) - parseStringToMs(a.timestamp);
+            });
+            renderTableHTML(sortedData);
         })
         .catch(err => console.error("Error loading data:", err));
     }
@@ -654,15 +684,11 @@
             return;
         }
 
-        // ฟังก์ชันช่วยจัดฟอร์แมตวันที่แบบไทย
         function formatThaiDateTime(inputStr) {
             if (!inputStr || inputStr === '-') return '-';
             if (inputStr.includes('ตกลงตามหน้างาน')) return inputStr; 
             try {
-                // ถ้าเป็นฟอร์แมตภาษาไทยของเดิมที่บันทึกไว้ ให้ทำความสะอาดก่อนแปลงเป็น Date Object
                 let cleanStr = inputStr.replace(/ น\./g, '').replace(/ น$/g, '');
-                
-                // แยกกรณีเป็นวันที่แบบระบบไทย เช่น 23/07/2569
                 if (cleanStr.includes('/')) {
                     let parts = cleanStr.split(' ');
                     let dateParts = parts[0].split('/');
@@ -670,7 +696,7 @@
                         let day = dateParts[0];
                         let month = dateParts[1];
                         let year = parseInt(dateParts[2]);
-                        if (year > 2500) year = year - 543; // แปลง พ.ศ. เป็น ค.ศ. ชั่วคราวเพื่อให้คอมเข้าใจ
+                        if (year > 2500) year = year - 543; 
                         
                         let timeStr = parts[1] ? parts[1].replace('.', ':') : '00:00';
                         cleanStr = `${year}-${month}-${day}T${timeStr}`;
@@ -682,8 +708,6 @@
                     let day = String(dateObj.getDate()).padStart(2, '0');
                     let month = String(dateObj.getMonth() + 1).padStart(2, '0');
                     let year = dateObj.getFullYear();
-                    
-                    // ปรับแสดงผลเป็นปี พ.ศ. (บวก 543 เสมอเมื่อแสดงบนหน้าจอ)
                     if (year < 2500) year = year + 543; 
                     
                     let hours = String(dateObj.getHours()).padStart(2, '0');
@@ -774,9 +798,7 @@
         });
     }
 
-    // สั่งให้ระบบเรียกข้อมูลครั้งแรกทันทีที่โหลดหน้าเว็บ
     fetchDataRealtime();
-    // สั่งให้ระบบอัปเดตข้อมูลอัตโนมัติทุก ๆ 10 วินาที (Real-time Sync)
     setInterval(fetchDataRealtime, 10000);
 </script>
 </body>
