@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CSS STYLE SECTION --- */
         :root {
             --bg-color: #ffffff;
             --primary-blue: #0A369D;
@@ -47,7 +46,6 @@
             padding: 20px;
         }
 
-        /* Header & Logo Banner */
         header {
             background: linear-gradient(-45deg, #062875, #0A369D, #4A90E2, #0A369D);
             background-size: 400% 400%;
@@ -62,25 +60,10 @@
             animation: digitalWave 12s ease infinite;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -50%; width: 30%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
-            transform: skewX(-25deg);
-            animation: lightPulse 6s ease-in-out infinite;
-        }
-
         @keyframes digitalWave {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
-        }
-
-        @keyframes lightPulse {
-            0% { left: -50%; }
-            30% { left: 150%; }
-            100% { left: 150%; }
         }
 
         .logo-placeholder {
@@ -93,7 +76,6 @@
             justify-content: center;
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -122,13 +104,8 @@
         .tab-btn.active {
             background: #062875 !important;
             color: white !important;
-            transform: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .tab-btn i { margin-right: 8px; }
-
-        /* Form Controls & Layout */
         .card {
             background: white;
             padding: 30px;
@@ -156,22 +133,6 @@
             border: 1px solid #DCE4EC;
             border-radius: 8px;
             font-size: 15px;
-            transition: all 0.3s;
-        }
-
-        input[type="file"] {
-            background: #f9f9f9;
-            padding: 10px;
-            border: 1px dashed var(--light-blue);
-            width: 100%;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--light-blue);
-            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
         }
 
         .checkbox-grid {
@@ -190,13 +151,6 @@
             cursor: pointer;
         }
 
-        .checkbox-item input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-blue);
-        }
-
-        /* Buttons & Animation */
         .btn {
             background: linear-gradient(135deg, var(--primary-orange), #FF9F43);
             color: white;
@@ -204,27 +158,21 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 127, 17, 0.3);
         }
 
         .btn:disabled {
             background: #bdc3c7;
-            box-shadow: none;
             cursor: not-allowed;
         }
 
         .btn-secondary {
             background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
-            box-shadow: 0 4px 15px rgba(10, 54, 157, 0.3);
         }
 
-        /* Data Table */
         .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
@@ -236,13 +184,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
             font-size: 14px;
         }
 
         th, td {
             padding: 15px;
             border-bottom: 1px solid #EEF2F5;
+            text-align: left;
         }
 
         th {
@@ -251,22 +199,18 @@
             font-weight: 600;
         }
 
-        tr:hover { background-color: #F9FBFC; }
-
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 12px;
             display: inline-block;
-            text-align: center;
         }
 
         .status-pending { background-color: var(--light-orange); color: var(--status-pending); }
         .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
         .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
 
-        /* Popup Modal */
         .modal {
             display: none;
             position: fixed;
@@ -285,7 +229,6 @@
             max-width: 500px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .stars {
@@ -302,7 +245,6 @@
 
         @media (max-width: 768px) {
             .nav-tabs { flex-direction: column; }
-            .checkbox-grid { grid-template-columns: 1fr; }
             th, td { padding: 10px; font-size: 13px; }
         }
     </style>
@@ -368,11 +310,11 @@
                 <textarea id="staffDetails" rows="4" placeholder="ระบุรายละเอียดงานประชาสัมพันธ์เพิ่มเติม..."></textarea>
             </div>
             <div class="form-group">
-                <label>แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ (ไม่เกิน 10MB)</label>
-                <input type="file" id="staffFile" accept="image/*, .pdf, .doc, .docx, .xls, .xlsx">
+                <label>แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ</label>
+                <input type="file" id="staffFile">
             </div>
             <div class="form-group">
-                <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ) </label>
+                <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ)</label>
                 <input type="email" id="staffEmail" placeholder="กรอกอีเมล">
             </div>
             <button type="submit" class="btn" id="staffSubmitBtn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ</button>
@@ -396,11 +338,11 @@
                 <textarea id="pubDetails" rows="4" required placeholder="กรอกรายละเอียดเรื่องที่ต้องการให้ประชาสัมพันธ์"></textarea>
             </div>
             <div class="form-group">
-                <label>แนบไฟล์รูปภาพ หรือเอกสารประกอบ (ไม่เกิน 10MB)</label>
-                <input type="file" id="pubFile" accept="image/*, .pdf, .doc, .docx">
+                <label>แนบไฟล์รูปภาพ หรือเอกสารประกอบ</label>
+                <input type="file" id="pubFile">
             </div>
             <div class="form-group">
-                <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ) </label>
+                <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ)</label>
                 <input type="email" id="pubEmail" placeholder="กรอกอีเมล">
             </div>
             <button type="submit" class="btn" id="pubSubmitBtn"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์</button>
@@ -429,7 +371,7 @@
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
-                    <tr><td colspan="9" style="text-align:center;">กำลังโหลดข้อมูลเรียลไทม์จากระบบ...</td></tr>
+                    <tr><td colspan="9" style="text-align:center;">กำลังโหลดข้อมูลเรียลไทม์...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -440,14 +382,14 @@
         <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
         <div class="form-group" style="max-width: 400px;">
             <label>รหัสผ่านเข้าสู่ระบบ (Password)</label>
-            <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่านเข้าสู่ระบบ">
+            <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่าน">
             <button class="btn btn-secondary" style="margin-top: 15px;" onclick="loginAdmin()">เข้าสู่ระบบ</button>
         </div>
     </div>
 
     <div id="admin-dashboard-tab" class="card">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2><i class="fa-solid fa-gauge"></i> แผงควบคุมผู้ดูแลระบบ (Admin Dashboard)</h2>
+            <h2><i class="fa-solid fa-gauge"></i> แผงควบคุมผู้ดูแลระบบ</h2>
             <button class="btn" style="background:crimson;" onclick="logoutAdmin()">ออกจากระบบ</button>
         </div>
         <div class="table-responsive" style="margin-top:20px;">
@@ -456,11 +398,11 @@
                     <tr>
                         <th>วัน/เวลาทำรายการ</th>
                         <th>ผู้ขอใช้</th>
-                        <th>ข้อมูลติดต่อ/สังกัด</th>
+                        <th>ข้อมูลติดต่อ</th>
                         <th>วันเวลานัดหมาย</th>
                         <th>รายละเอียดงาน</th>
-                        <th>ไฟล์แนบจากระบบ</th>
-                        <th>สถานะปัจจุบัน</th>
+                        <th>ไฟล์แนบ</th>
+                        <th>สถานะ</th>
                         <th>จัดการสถานะ</th>
                     </tr>
                 </thead>
@@ -474,9 +416,8 @@
 <div id="satisfactionModal" class="modal">
     <div class="modal-content">
         <h2 style="color: var(--status-approve);"><i class="fa-solid fa-circle-check"></i> ส่งคำขอเรียบร้อยแล้ว!</h2>
-        <p style="margin-top: 10px;">ระบบได้ทำการบันทึกข้อมูลของท่านเรียบร้อยแล้ว</p>
-        <p style="font-size: 14px; color: var(--text-light); margin-top: 5px;">โปรดประเมินความพึงพอใจในการใช้บริการผ่านระบบออนไลน์</p>
-        
+        <p style="margin-top: 10px;">ระบบบันทึกข้อมูลและส่งอีเมลหาเจ้าหน้าที่เรียบร้อยแล้ว</p>
+        <p style="font-size: 14px; color: var(--text-light); margin-top: 5px;">โปรดประเมินความพึงพอใจระบบออนไลน์</p>
         <form id="ratingForm" onsubmit="submitRating(event)">
             <div class="stars">
                 <input type="radio" id="star5" name="rating" value="5" required/><label for="star5">★</label>
@@ -508,13 +449,12 @@
     }
 
     function loginAdmin() {
-        const pass = document.getElementById('adminPassword').value;
-        if (pass === 'prbp6675') {
+        if (document.getElementById('adminPassword').value === 'prbp6675') {
             document.getElementById('admin-login-tab').classList.remove('active');
             document.getElementById('admin-dashboard-tab').classList.add('active');
             fetchDataRealtime();
         } else {
-            alert('รหัสผ่านแอดมินไม่ถูกต้อง!');
+            alert('รหัสผ่านไม่ถูกต้อง!');
         }
     }
 
@@ -525,19 +465,12 @@
     }
 
     function getFileData(fileInput) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const file = fileInput.files[0];
             if (!file) { resolve(null); return; }
             const reader = new FileReader();
-            reader.onload = () => {
-                const base64String = reader.result.split(',')[1];
-                resolve({
-                    base64: base64String,
-                    name: file.name,
-                    mimeType: file.type
-                });
-            };
-            reader.onerror = error => reject(error);
+            reader.onload = () => resolve({ base64: reader.result.split(',')[1], name: file.name, mimeType: file.type });
+            reader.onerror = () => resolve(null);
             reader.readAsDataURL(file);
         });
     }
@@ -546,7 +479,7 @@
         event.preventDefault();
         const submitBtn = userType === 'เจ้าหน้าที่' ? document.getElementById('staffSubmitBtn') : document.getElementById('pubSubmitBtn');
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปโหลดไฟล์และส่งข้อมูล...';
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่งข้อมูล...';
 
         let formData = {
           action: 'createRequest',
@@ -569,11 +502,7 @@
                 formData.email = document.getElementById('staffEmail').value;
                 
                 let fileObj = await getFileData(document.getElementById('staffFile'));
-                if(fileObj) {
-                    formData.fileData = fileObj.base64;
-                    formData.fileName = fileObj.name;
-                    formData.fileMimeType = fileObj.mimeType;
-                }
+                if(fileObj) { formData.fileData = fileObj.base64; formData.fileName = fileObj.name; formData.fileMimeType = fileObj.mimeType; }
                 document.getElementById('staffForm').reset();
             } else {
                 formData.name = document.getElementById('pubName').value;
@@ -584,11 +513,7 @@
                 formData.email = document.getElementById('pubEmail').value;
                 
                 let fileObj = await getFileData(document.getElementById('pubFile'));
-                if(fileObj) {
-                    formData.fileData = fileObj.base64;
-                    formData.fileName = fileObj.name;
-                    formData.fileMimeType = fileObj.mimeType;
-                }
+                if(fileObj) { formData.fileData = fileObj.base64; formData.fileName = fileObj.name; formData.fileMimeType = fileObj.mimeType; }
                 document.getElementById('publicForm').reset();
             }
 
@@ -598,7 +523,7 @@
             await sendDataToAppsScript(formData);
             document.getElementById('satisfactionModal').style.display = 'flex';
         } catch (err) {
-            alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err);
+            alert('เกิดข้อผิดพลาด: ' + err);
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = userType === 'เจ้าหน้าที่' ? '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ' : '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอความอนุเคราะห์';
@@ -608,11 +533,7 @@
     function submitRating(event) {
         event.preventDefault();
         const selectedRating = document.querySelector('input[name="rating"]:checked').value;
-        sendDataToAppsScript({
-            action: 'submitRating',
-            rowId: currentSubmittedRowId,
-            rating: selectedRating + " ดาว"
-        });
+        sendDataToAppsScript({ action: 'submitRating', rowId: currentSubmittedRowId, rating: selectedRating + " ดาว" });
         document.getElementById('satisfactionModal').style.display = 'none';
         document.getElementById('ratingForm').reset();
         switchTab('tracking');
@@ -624,34 +545,26 @@
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
-        }).then(() => {
-            fetchDataRealtime();
-        });
+        }).then(() => { fetchDataRealtime(); });
     }
 
-    // ฟังก์ชันสำหรับแปลงรูปแบบสตริงใด ๆ ให้กลายเป็นค่าตัวเลข (Millisecond) เพื่อใช้จัดลำดับ
+    // ฟังก์ชันจัดการดึงเลขเวลาแบบปลอดภัย 100% ป้องกันข้อผิดพลาด String Split
     function parseStringToMs(dateStr) {
         if (!dateStr || dateStr === '-') return 0;
         try {
-            let cleanStr = dateStr.replace(/ น\./g, '').replace(/ น$/g, '').trim();
-            if (cleanStr.includes('/')) {
-                let parts = cleanStr.split(' ');
-                let dateParts = parts[0].split('/');
-                if (dateParts.length === 3) {
-                    let day = parseInt(dateParts[0]);
-                    let month = parseInt(dateParts[1]) - 1;
-                    let year = parseInt(dateParts[2]);
-                    if (year > 2500) year = year - 543; // แปลงกลับเป็น ค.ศ. สำหรับคำนวณ
-                    
-                    let timeParts = parts[1] ? parts[1].replace('.', ':').split(':') : [0, 0];
-                    let hours = parseInt(timeParts[0]) || 0;
-                    let minutes = parseInt(timeParts[1]) || 0;
-                    
-                    return new Date(year, month, day, hours, minutes).getTime();
-                }
+            let s = dateStr.toString().replace(/ น\./g, '').replace(/ น$/g, '').trim();
+            let matches = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s*(\d{1,2})[:\.](\d{1,2})/);
+            if (matches) {
+                let day = parseInt(matches[1]);
+                let month = parseInt(matches[2]) - 1;
+                let year = parseInt(matches[3]);
+                if (year > 2500) year -= 543;
+                let hr = parseInt(matches[4]);
+                let min = parseInt(matches[5]);
+                return new Date(year, month, day, hr, min).getTime();
             }
-            let directDate = new Date(cleanStr);
-            return !isNaN(directDate.getTime()) ? directDate.getTime() : 0;
+            let d = new Date(s);
+            return !isNaN(d.getTime()) ? d.getTime() : 0;
         } catch(e) {
             return 0;
         }
@@ -659,15 +572,12 @@
 
     function fetchDataRealtime() {
         document.getElementById('lastUpdateText').innerText = "อัปเดตล่าสุดเมื่อ: " + new Date().toLocaleString('th-TH');
-        if(WEB_APP_URL.includes("YOUR_DEPLOYMENT_ID")) return;
-
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
         .then(data => {
-            // ปรับปรุงใหม่: คัดกรองและ Sort ข้อมูลจาก Timestamp โดยเรียงจากค่ามากไปหาน้อย (ล่าสุดอยู่บนสุด) 100%
-            const sortedData = [...data].sort((a, b) => {
-                return parseStringToMs(b.timestamp) - parseStringToMs(a.timestamp);
-            });
+            if (!data || !Array.isArray(data)) return;
+            // จัดเรียงแบบปลอดภัย: ล่าสุดอยู่บนสุดตาม Timestamp เสมอ
+            const sortedData = [...data].sort((a, b) => parseStringToMs(b.timestamp) - parseStringToMs(a.timestamp));
             renderTableHTML(sortedData);
         })
         .catch(err => console.error("Error loading data:", err));
@@ -678,89 +588,45 @@
         const adminBody = document.getElementById('adminTableBody');
         userBody.innerHTML = ''; adminBody.innerHTML = '';
 
-        if(dataList.length === 0) {
+        if(!dataList || dataList.length === 0) {
             userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
             adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
             return;
         }
 
-        function formatThaiDateTime(inputStr) {
-            if (!inputStr || inputStr === '-') return '-';
-            if (inputStr.includes('ตกลงตามหน้างาน')) return inputStr; 
-            try {
-                let cleanStr = inputStr.replace(/ น\./g, '').replace(/ น$/g, '');
-                if (cleanStr.includes('/')) {
-                    let parts = cleanStr.split(' ');
-                    let dateParts = parts[0].split('/');
-                    if (dateParts.length === 3) {
-                        let day = dateParts[0];
-                        let month = dateParts[1];
-                        let year = parseInt(dateParts[2]);
-                        if (year > 2500) year = year - 543; 
-                        
-                        let timeStr = parts[1] ? parts[1].replace('.', ':') : '00:00';
-                        cleanStr = `${year}-${month}-${day}T${timeStr}`;
-                    }
-                }
-
-                let dateObj = new Date(cleanStr);
-                if (!isNaN(dateObj.getTime())) {
-                    let day = String(dateObj.getDate()).padStart(2, '0');
-                    let month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                    let year = dateObj.getFullYear();
-                    if (year < 2500) year = year + 543; 
-                    
-                    let hours = String(dateObj.getHours()).padStart(2, '0');
-                    let minutes = String(dateObj.getMinutes()).padStart(2, '0');
-                    if (hours === '00' && minutes === '00') return `${day}/${month}/${year}`;
-                    return `${day}/${month}/${year} ${hours}:${minutes} น.`;
-                }
-            } catch (e) {}
-            return inputStr;
-        }
-
         dataList.forEach(item => {
-            let displayTimestamp = formatThaiDateTime(item.timestamp);
-            let displayDateTime = formatThaiDateTime(item.dateTime);
-
             let badgeClass = 'status-pending';
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
             let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
-            
-            let userFileHtml = '-';
-            if (item.fileLink && item.fileLink !== '-') {
-                if (!item.fileLink.includes("เกิดข้อผิดพลาด") && !item.fileLink.includes("ไม่มีการส่งข้อมูล")) {
-                    userFileHtml = `<span style="color:var(--text-dark); font-weight:500;" title="มีไฟล์เอกสารแนบในระบบแล้ว"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>`;
-                }
-            }
+            let userFileHtml = (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("ข้อผิดพลาด")) ? `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>` : '-';
 
             userBody.innerHTML += `
                 <tr>
-                    <td>${displayTimestamp}</td>
-                    <td><b>${item.userType}</b></td>
-                    <td>${item.name}</td>
-                    <td>${item.contact}</td>
-                    <td><u>${item.prType}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                    <td><strong>${displayDateTime}</strong></td>
+                    <td>${item.timestamp || '-'}</td>
+                    <td><b>${item.userType || '-'}</b></td>
+                    <td>${item.name || '-'}</td>
+                    <td>${item.contact || '-'}</td>
+                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
+                    <td><strong>${item.dateTime || '-'}</strong></td>
                     <td>${userFileHtml}</td>
-                    <td style="color:#FFC107; font-weight:bold;">${item.rating}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                    <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
+                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
                 </tr>
             `;
 
             adminBody.innerHTML += `
                 <tr>
-                    <td>${displayTimestamp}</td>
-                    <td>[${item.userType}] <b>${item.name}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
-                    <td>${item.contact}</td>
-                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
-                    <td><u>${item.prType}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating}</span></td>
+                    <td>${item.timestamp || '-'}</td>
+                    <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
+                    <td>${item.contact || '-'}</td>
+                    <td><b style="color:var(--primary-blue);">${item.dateTime || '-'}</b></td>
+                    <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
                     <td>${adminFileHtml}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
                     <td>
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto;">
                             <option value="">--เปลี่ยนสถานะ--</option>
                             <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
                             <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
@@ -774,23 +640,15 @@
 
     function changeStatusRealtime(rowId, newStatus, userEmail) {
         if(!newStatus) return;
-        if(!confirm(`คุณแน่ใจใช่หรือไม่ที่จะเปลี่ยนสถานะคำขอนี้เป็น "${newStatus}" ?`)) {
-            fetchDataRealtime();
-            return;
-        }
+        if(!confirm(`คุณแน่ใจใช่หรือไม่ที่จะเปลี่ยนสถานะเป็น "${newStatus}" ?`)) { fetchDataRealtime(); return; }
         
         fetch(WEB_APP_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'updateStatus',
-                rowId: rowId,
-                status: newStatus,
-                email: userEmail
-            })
+            body: JSON.stringify({ action: 'updateStatus', rowId: rowId, status: newStatus, email: userEmail })
         }).then(() => {
-            alert('อัปเดตสถานะและส่งอีเมลแจ้งเตือนเรียบร้อยแล้ว!');
+            alert('อัปเดตสถานะเรียบร้อยแล้ว!');
             fetchDataRealtime();
         }).catch(err => {
             alert('เกิดข้อผิดพลาด: ' + err);
