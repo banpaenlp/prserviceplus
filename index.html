@@ -49,45 +49,39 @@
 
         /* Header & Logo Banner */
         header {
-    /* ใช้ Gradient 4 สีสไตล์ Smart Digital */
-    background: linear-gradient(-45deg, #062875, #0A369D, #4A90E2, #0A369D);
-    background-size: 400% 400%; /* ขยายขนาดเพื่อให้แสงเคลื่อนที่ได้ */
-    color: white;
-    padding: 30px 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
-    margin-bottom: 30px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    
-    /* สั่งให้เล่นเอนิเมชั่นเคลื่อนไหวอย่างนุ่มนวลตลอดเวลา */
-    animation: digitalWave 12s ease infinite;
-}
+            background: linear-gradient(-45deg, #062875, #0A369D, #4A90E2, #0A369D);
+            background-size: 400% 400%;
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: digitalWave 12s ease infinite;
+        }
 
-/* เพิ่มแสงเงาดิจิทัลวิ่งสะท้อนตัดผ่านแบนเนอร์เพิ่มความล้ำ */
-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -50%; width: 30%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
-    transform: skewX(-25deg);
-    animation: lightPulse 6s ease-in-out infinite;
-}
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -50%; width: 30%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-25deg);
+            animation: lightPulse 6s ease-in-out infinite;
+        }
 
-/* 🎬 ส่วนควบคุมความเคลื่อนไหวของสีพื้นหลัง */
-@keyframes digitalWave {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+        @keyframes digitalWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-/* 🎬 ส่วนควบคุมความเคลื่อนไหวของลำแสงตัดผ่าน */
-@keyframes lightPulse {
-    0% { left: -50%; }
-    30% { left: 150%; }
-    100% { left: 150%; }
-}
+        @keyframes lightPulse {
+            0% { left: -50%; }
+            30% { left: 150%; }
+            100% { left: 150%; }
+        }
 
         .logo-placeholder {
             width: 100%;
@@ -120,18 +114,17 @@ header::before {
         }
 
         .tab-btn:hover {
-    background: var(--primary-blue);
-    color: white;
-    transform: translateY(-2px);
-}
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
 
-/* ปุ่มที่กำลังใช้งานอยู่ (Active) จะเป็นสีน้ำเงินเข้มและล็อกอยู่กับที่ */
-.tab-btn.active {
-    background: #062875 !important; /* สีน้ำเงินเข้มแบบเดียวกับแบนเนอร์หลัก */
-    color: white !important;
-    transform: none; /* ล็อกไว้ไม่ให้ลอย */
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); /* เพิ่มมิติกดทับ */
-}
+        .tab-btn.active {
+            background: #062875 !important;
+            color: white !important;
+            transform: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
 
         .tab-btn i { margin-right: 8px; }
 
@@ -148,9 +141,7 @@ header::before {
 
         .card.active { display: block; }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         label {
             display: block;
@@ -474,7 +465,7 @@ header::before {
                     </tr>
                 </thead>
                 <tbody id="adminTableBody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
@@ -500,22 +491,16 @@ header::before {
 </div>
 
 <script>
-    // URL เว็บแอปของ Google Apps Script
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxXYIqpIv5U8U7HkL90_vVOBM1S9eijkqpz-TUDJpJmFCKQuHyKCqccOdT9cFCS9xs/exec"; 
     let currentSubmittedRowId = null; 
 
     function switchTab(tabName) {
-        // 1. ซ่อนการ์ดฟอร์มทุกหน้าก่อน
         document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-        
-        // 2. ล้างสถานะสีเข้มออกจากทุกปุ่ม
         document.querySelectorAll('.nav-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
         
-        // 3. แสดงฟอร์มหน้าที่เลือก
         const targetTab = document.getElementById(`${tabName}-tab`);
         if (targetTab) targetTab.classList.add('active');
         
-        // 4. ค้นหาปุ่มที่กดคลิก แล้วสั่งให้เปลี่ยนสีค้างไว้ (Active)
         const targetBtn = Array.from(document.querySelectorAll('.nav-tabs .tab-btn')).find(btn => btn.getAttribute('onclick').includes(`'${tabName}'`));
         if (targetBtn) targetBtn.classList.add('active');
         
@@ -539,7 +524,6 @@ header::before {
         document.getElementById('adminPassword').value = '';
     }
 
-    // ฟังก์ชันแปลงไฟล์เป็น Base64 เพื่อส่งเข้า Google Drive
     function getFileData(fileInput) {
         return new Promise((resolve, reject) => {
             const file = fileInput.files[0];
@@ -560,8 +544,6 @@ header::before {
 
     async function handleFormSubmit(event, userType) {
         event.preventDefault();
-        
-        // แสดง Loading ป้องกันปุ่มกดซ้ำระหว่างอัปโหลดไฟล์
         const submitBtn = userType === 'เจ้าหน้าที่' ? document.getElementById('staffSubmitBtn') : document.getElementById('pubSubmitBtn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปโหลดไฟล์และส่งข้อมูล...';
@@ -586,7 +568,6 @@ header::before {
                 formData.details = document.getElementById('staffDetails').value;
                 formData.email = document.getElementById('staffEmail').value;
                 
-                // ดึงไฟล์แนบ
                 let fileObj = await getFileData(document.getElementById('staffFile'));
                 if(fileObj) {
                     formData.fileData = fileObj.base64;
@@ -602,7 +583,6 @@ header::before {
                 formData.details = document.getElementById('pubDetails').value;
                 formData.email = document.getElementById('pubEmail').value;
                 
-                // ดึงไฟล์แนบ
                 let fileObj = await getFileData(document.getElementById('pubFile'));
                 if(fileObj) {
                     formData.fileData = fileObj.base64;
@@ -615,10 +595,7 @@ header::before {
             currentSubmittedRowId = 'ROW_' + Date.now();
             formData.rowId = currentSubmittedRowId;
 
-            // ส่งข้อมูลหลังบ้าน
             await sendDataToAppsScript(formData);
-            
-            // เปิดโมดอลให้ประเมินดาว
             document.getElementById('satisfactionModal').style.display = 'flex';
         } catch (err) {
             alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err);
@@ -659,7 +636,6 @@ header::before {
         fetch(`${WEB_APP_URL}?action=readAll`)
         .then(res => res.json())
         .then(data => {
-            // 🔄 ทำการกลับหัวข้อมูลทั้งหมดเพื่อให้แถวที่ส่งเข้ามาใหม่ล่าสุด ขึ้นไปแสดงบนสุด
             const reversedData = [...data].reverse();
             renderTableHTML(reversedData);
         })
@@ -708,7 +684,6 @@ header::before {
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            // จัดระบบการดึงลิงก์ไฟล์ Google Drive มาดาวน์โหลด
             let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
             
             let userFileHtml = '-';
@@ -744,11 +719,10 @@ header::before {
                     <td>
                         <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email}')" style="padding:5px; width:auto;">
                             <option value="">--เปลี่ยนสถานะ--</option>
-                            <option value="รอดำเนินการ" ${item.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option>
-                            <option value="อนุมัติ" ${item.status==='อนุมัติ'?'selected':''}>อนุมัติ</option>
-                            <option value="ไม่อนุมัติ" ${item.status==='ไม่อนุมัติ'?'selected':''}>ไม่อนุมัติ</option>
+                            <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
+                            <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
+                            <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
                         </select>
-                        <button onclick="deleteRequest('${item.rowId}')" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `;
@@ -757,22 +731,32 @@ header::before {
 
     function changeStatusRealtime(rowId, newStatus, userEmail) {
         if(!newStatus) return;
-        if(confirm(`คุณต้องการเปลี่ยนสถานะคำขอนี้เป็น "${newStatus}" ใช่หรือไม่?`)) {
-            sendDataToAppsScript({ action: 'updateStatus', rowId: rowId, status: newStatus, email: userEmail })
-            .then(() => alert('เปลี่ยนสถานะระบบสำเร็จ และส่งเมลแจ้งเตือนแล้ว'));
+        if(!confirm(`คุณแน่ใจใช่หรือไม่ที่จะเปลี่ยนสถานะคำขอนี้เป็น "${newStatus}" ?`)) {
+            fetchDataRealtime();
+            return;
         }
+        
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'updateStatus',
+                rowId: rowId,
+                status: newStatus,
+                email: userEmail
+            })
+        }).then(() => {
+            alert('อัปเดตสถานะและส่งอีเมลแจ้งเตือนเรียบร้อยแล้ว!');
+            fetchDataRealtime();
+        }).catch(err => {
+            alert('เกิดข้อผิดพลาด: ' + err);
+            fetchDataRealtime();
+        });
     }
 
-    function deleteRequest(rowId) {
-        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบคำขอนี้ออกจากฐานข้อมูลถาวร?')) {
-            sendDataToAppsScript({ action: 'delete', rowId: rowId });
-        }
-    }
-
-    // ⏰ ตั้งค่าระบบดึงข้อมูลแบบเรียลไทม์อัตโนมัติในพื้นหลัง ทุกๆ 10 วินาที
+    // สั่งให้ระบบอัปเดตข้อมูลอัตโนมัติทุก ๆ 10 วินาที (Real-time Sync)
     setInterval(fetchDataRealtime, 10000);
-
-    window.onload = function() { fetchDataRealtime(); };
 </script>
 </body>
 </html>
