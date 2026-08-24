@@ -632,6 +632,32 @@ header::after {
         .catch(err => console.error("Error loading data:", err));
     }
 
+    function changeStatusRealtime(rowId, statusValue, email) {
+        if (!statusValue) return;
+
+        let rejectReason = "";
+        
+        // หากเลือก "ไม่อนุมัติ" ให้แสดง Prompt ถามเหตุผล
+        if (statusValue === "ไม่อนุมัติ") {
+            rejectReason = prompt("กรุณาระบุเหตุผลในการไม่อนุมัติคำขอนี้:");
+            
+            // ถ้ากด Cancel (ยกเลิก) ให้รีโหลดข้อมูลเพื่อคืนค่า Dropdown ที่เดิม
+            if (rejectReason === null) {
+                fetchDataRealtime();
+                return;
+            }
+        }
+
+        // ส่งค่า status และ rejectReason ไปอัปเดตที่ Apps Script
+        sendDataToAppsScript({
+            action: 'updateStatus',
+            rowId: rowId,
+            status: statusValue,
+            rejectReason: rejectReason,
+            email: email
+        });
+    }
+
     function renderTableHTML(dataList) {
     const userBody = document.getElementById('userTableBody');
     const adminBody = document.getElementById('adminTableBody');
@@ -694,6 +720,11 @@ header::after {
         let displayTimestamp = formatToThaiStyle(item.timestamp);
         let displayDateTime = formatToThaiStyle(item.dateTime);
 
+        // ตรวจสอบเหตุผลการไม่อนุมัติ หากมีให้สร้างข้อความสีแดงขึ้นบรรทัดใหม่
+        let rejectReasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) 
+            ? `<br><small style="color: var(--status-reject, #dc3545); font-weight: 500; display: block; margin-top: 4px;">(เหตุผล: ${item.rejectReason})</small>` 
+            : '';
+
         userBody.innerHTML += `
             <tr>
                 <td>${displayTimestamp}</td>
@@ -704,7 +735,10 @@ header::after {
                 <td><strong>${displayDateTime}</strong></td>
                 <td>${userFileHtml}</td>
                 <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
-                <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
+                <td>
+                    <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
+                    ${rejectReasonHtml}
+                </td>
             </tr>
         `;
 
@@ -733,45 +767,7 @@ header::after {
     });
 }
 
-// ฟังก์ชันสำหรับเรียกคำสั่งลบไปยัง Apps Script
-function deleteRequestRealtime(rowId) {
-    if(!rowId) return;
-    if(!confirm('คุณแน่ใจใช่หรือไม่ที่จะลบคำขอนี้ออกจากระบบอย่างถาวร? (ไม่สามารถกู้คืนได้)')) return;
-    
-    fetch(WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'deleteRequest', rowId: rowId })
-    }).then(() => {
-        alert('ลบข้อมูลคำขอเรียบร้อยแล้ว!');
-        fetchDataRealtime();
-    }).catch(err => {
-        alert('เกิดข้อผิดพลาดในการลบ: ' + err);
-        fetchDataRealtime();
-    });
-}
-
-    function changeStatusRealtime(rowId, newStatus, userEmail) {
-        if(!newStatus) return;
-        if(!confirm(`คุณแน่ใจใช่หรือไม่ที่จะเปลี่ยนสถานะเป็น "${newStatus}" ?`)) { fetchDataRealtime(); return; }
-        
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'updateStatus', rowId: rowId, status: newStatus, email: userEmail })
-        }).then(() => {
-            alert('อัปเดตสถานะเรียบร้อยแล้ว!');
-            fetchDataRealtime();
-        }).catch(err => {
-            alert('เกิดข้อผิดพลาด: ' + err);
-            fetchDataRealtime();
-        });
-    }
-
-    fetchDataRealtime();
-    setInterval(fetchDataRealtime, 10000);
+// ฟังก์ชันสำหรับเรียกคำสั่งเพิ่มเติม
 </script>
 </body>
 </html>
