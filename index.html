@@ -46,14 +46,14 @@
             padding: 20px;
         }
 
-        /* --- Header ดีไซน์ใหม่ Modern Digital --- */
+        /* --- Header ดีไซน์ใหม่ Modern Digital & Clean --- */
         header {
             background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
             background-size: 400% 400%;
             color: white;
-            padding: 35px 20px;
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(10, 54, 157, 0.25);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(10, 54, 157, 0.22);
             margin-bottom: 30px;
             text-align: center;
             position: relative;
@@ -66,7 +66,7 @@
             content: '';
             position: absolute;
             top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.18), transparent);
             transform: skewX(-25deg);
             animation: digitalLightPulse 6s ease-in-out infinite;
         }
@@ -91,26 +91,32 @@
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.95);
-            padding: 10px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 12px 24px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-placeholder:hover {
+            transform: translateY(-2px);
         }
 
         .header-badges {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 15px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
 
         .header-badge-item {
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            padding: 6px 16px;
+            backdrop-filter: blur(8px);
+            padding: 7px 18px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 13.5px;
             border: 1px solid rgba(255, 255, 255, 0.25);
+            letter-spacing: 0.3px;
         }
 
         /* --- Nav & Tabs --- */
@@ -165,14 +171,36 @@
             color: var(--primary-blue);
         }
 
-        input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], select, textarea {
+        /* --- สไตล์ช่อง Input / Textarea / Select (ขอบส้มเมื่อคลิก/โฟกัส) --- */
+        input[type="text"], 
+        input[type="email"], 
+        input[type="tel"], 
+        input[type="datetime-local"], 
+        input[type="password"],
+        select, 
+        textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid #DCE4EC;
             border-radius: 8px;
             font-size: 15px;
+            transition: all 0.2s ease-in-out;
+            outline: none;
         }
 
+        /* เอฟเฟกต์เมื่อผู้ใช้กดคลิกพิมพ์ (Focus State) -> เปลี่ยนขอบเป็นสีส้ม + เงาส้มอ่อน */
+        input[type="text"]:focus, 
+        input[type="email"]:focus, 
+        input[type="tel"]:focus, 
+        input[type="datetime-local"]:focus, 
+        input[type="password"]:focus,
+        select:focus, 
+        textarea:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 3px rgba(255, 127, 17, 0.25) !important;
+        }
+
+        /* --- สไตล์ Checkbox ติ๊กถูกสีส้ม --- */
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -187,6 +215,21 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            user-select: none;
+        }
+
+        /* เปลี่ยนสีปุ่ม Checkbox ให้เป็นสีส้ม */
+        input[type="checkbox"] {
+            accent-color: var(--primary-orange);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"]:focus {
+            outline: 2px solid var(--primary-orange);
+            outline-offset: 1px;
         }
 
         .btn {
@@ -200,15 +243,27 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 127, 17, 0.3);
         }
 
         .btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .btn-secondary {
             background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 4px 12px rgba(10, 54, 157, 0.3);
         }
 
         .table-responsive {
@@ -494,7 +549,7 @@
 </div>
 
 <script>
-    // ** อย่าลืมเปลี่ยน WEB_APP_URL เป็นของคุณหลังจาก Deploy แบบ New Deployment **
+    // Web App URL จาก Google Apps Script
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzN5Wu0g5MHbrOtvVKdb5FU0Xi042hDhOVm_ijV92LDYawv9HGutOSJmw-n9Rc3MQP9/exec"; 
     let currentSubmittedRowId = null; 
 
@@ -530,7 +585,7 @@
     // ฟังก์ชันแปลงหลายไฟล์เป็น Base64 (สูงสุด 5 ไฟล์)
     function getMultipleFilesData(fileInput) {
         return new Promise((resolve) => {
-            const files = Array.from(fileInput.files).slice(0, 5); // จำกัด 5 ไฟล์
+            const files = Array.from(fileInput.files).slice(0, 5);
             if (files.length === 0) { resolve([]); return; }
 
             let filePromises = files.map(file => {
@@ -716,7 +771,6 @@
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            // จัดการ ลิงก์แนบไฟล์หลายไฟล์
             let adminFileHtml = '-';
             let userFileHtml = '-';
 
@@ -753,15 +807,18 @@
             adminBody.innerHTML += `
                 <tr>
                     <td>${displayTimestamp}</td>
-                    <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
-                    <td>${item.contact || '-'}</td>
-                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
-                    <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
+                    <td><b>${item.name || '-'}</b><br><small style="color:gray;">(${item.userType || '-'})</small></td>
+                    <td>${item.contact || '-'}<br><small style="color:gray;">${item.email || ''}</small></td>
+                    <td><strong>${displayDateTime}</strong></td>
+                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
                     <td>${adminFileHtml}</td>
-                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
                     <td>
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto;">
-                            <option value="">--เปลี่ยนสถานะ--</option>
+                        <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
+                        ${rejectReasonHtml}
+                    </td>
+                    <td>
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding: 5px; font-size: 13px;">
+                            <option value="">-- เปลี่ยนสถานะ --</option>
                             <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
                             <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
                             <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
@@ -771,6 +828,11 @@
             `;
         });
     }
+
+    // โหลดข้อมูลอัตโนมัติเมื่อเปิดหน้าเว็บ
+    window.onload = function() {
+        fetchDataRealtime();
+    };
 </script>
 </body>
 </html>
