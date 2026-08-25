@@ -46,85 +46,74 @@
             padding: 20px;
         }
 
-        /* --- สำเนาโค้ด CSS สำหรับแบนเนอร์ส่วนหัวแบบสมาร์ทดิจิทัล --- */
+        /* --- Header ดีไซน์ใหม่ Modern Digital --- */
+        header {
+            background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
+            background-size: 400% 400%;
+            color: white;
+            padding: 35px 20px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(10, 54, 157, 0.25);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: digitalBackgroundWave 15s ease infinite;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
 
-/* 1. ส่วนควบคุมสไตล์หลักของ Header */
-header {
-    /* เปลี่ยนเป็น Smart Blue Gradient 4 สี */
-    background: linear-gradient(-45deg, #062875, #0A369D, #1E88E5, #0A369D);
-    background-size: 400% 400%; /* ขยายขนาดเพื่อให้ Gradient เคลื่อนที่ได้ */
-    color: white;
-    padding: 30px 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(10, 54, 157, 0.2);
-    margin-bottom: 30px;
-    text-align: center;
-    position: relative; /* สำคัญสำหรับ Pseudo-elements */
-    overflow: hidden; /* ซ่อนส่วนที่ล้นออกไป */
-    
-    /* อนิเมชั่นฉากหลังเคลื่อนที่นุ่มนวล (ลื่นไหล) */
-    animation: digitalBackgroundWave 15s ease infinite;
-}
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-25deg);
+            animation: digitalLightPulse 6s ease-in-out infinite;
+        }
 
-/* 2. ลำแสงดิจิทัลวิ่งตัดผ่าน ( Frequency Pulse - ถี่และเร็ว) */
-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%; width: 50%; height: 100%;
-    /* ลำแสงสีขาวขุ่นบางๆ Skew เอียง */
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: skewX(-25deg);
-    
-    /* อนิเมชั่นลำแสงวิ่งเร็ว (ถี่) */
-    animation: digitalLightPulse 6s ease-in-out infinite;
-}
+        @keyframes digitalBackgroundWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-/* 3. อนุภาคแสงดิจิทัลลอยตัว (Digital Particles - เรียบหรู) */
-header::after {
-    content: '';
-    position: absolute;
-    bottom: -20px; right: -20px; width: 100px; height: 100px;
-    background: radial-gradient(circle, rgba(74, 144, 226, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
-    
-    /* อนิเมชั่นอนุภาคแสงค่อยๆ ปรากฏ (ลื่นไหล) */
-    animation: digitalParticleFade 8s ease-in-out infinite;
-}
-
-/* 🎬 ส่วนควบคุม Keyframe Animations */
-
-/* อนิเมชั่น 1: ฉากหลัง Gradient เคลื่อนที่ */
-@keyframes digitalBackgroundWave {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* อนิเมชั่น 2: ลำแสงวิ่งตัดผ่าน (ถี่และเร็ว) */
-@keyframes digitalLightPulse {
-    0% { left: -100%; }
-    20% { left: 150%; } /* วิ่งผ่านอย่างเร็วภายใน 20% ของเวลา */
-    100% { left: 150%; } /* หยุดรอที่ปลายทางก่อนเริ่มใหม่ */
-}
-
-/* อนิเมชั่น 3: อนุภาคแสงค่อยๆ ปรากฏและขยาย */
-@keyframes digitalParticleFade {
-    0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); }
-    50% { opacity: 1; transform: scale(1.2) translateY(-20px); }
-}
-
-/* --- สิ้นสุดโค้ด CSS สำหรับแบนเนอร์ --- */
+        @keyframes digitalLightPulse {
+            0% { left: -100%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
+        }
 
         .logo-placeholder {
             width: 100%;
-            max-width: 500px;
-            height: 100px;
+            max-width: 480px;
             margin: 0 auto 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
+        .header-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-badge-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* --- Nav & Tabs --- */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -260,6 +249,24 @@ header::after {
         .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
         .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
 
+        .file-link-btn {
+            display: inline-block;
+            background: var(--sky-blue);
+            color: var(--primary-blue);
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+            border: 1px solid #C4D9F2;
+        }
+
+        .file-link-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -303,10 +310,16 @@ header::after {
 <div class="container">
     <header>
         <div class="logo-placeholder">
-            <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 120px; max-width: 100%; object-fit: contain;">
+            <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 80px; max-width: 100%; object-fit: contain;">
         </div>
-        <h1>PR Service plus+</h1>
-        <p>ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
+        <h1 style="font-size: 30px; font-weight: 700; letter-spacing: 0.5px;">PR Service plus+</h1>
+        <p style="font-weight: 300; opacity: 0.9;">ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
+        
+        <div class="header-badges">
+            <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
+            <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
+            <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
+        </div>
     </header>
 
     <div class="nav-tabs">
@@ -359,8 +372,9 @@ header::after {
                 <textarea id="staffDetails" rows="4" placeholder="ชื่อโครงการ/กิจกรรม หรือรายละเอียดเพิ่มเติม..."></textarea>
             </div>
             <div class="form-group">
-                <label>แนบไฟล์รูปภาพ หรือไฟล์เอกสารโครงการ</label>
-                <input type="file" id="staffFile">
+                <label>แนบไฟล์รูปภาพ หรือเอกสาร (เลือกได้สูงสุด 5 ไฟล์)</label>
+                <input type="file" id="staffFile" multiple accept="image/*,.pdf,.doc,.docx">
+                <small style="color: var(--text-light); opacity: 0.8;">* กด Ctrl หรือ Shift ค้างไว้เพื่อเลือกหลายภาพพร้อมกัน</small>
             </div>
             <div class="form-group">
                 <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ)</label>
@@ -387,8 +401,9 @@ header::after {
                 <textarea id="pubDetails" rows="4" required placeholder="กรอกรายละเอียดเรื่องที่ต้องการให้ประชาสัมพันธ์"></textarea>
             </div>
             <div class="form-group">
-                <label>แนบไฟล์รูปภาพ หรือเอกสารประกอบ</label>
-                <input type="file" id="pubFile">
+                <label>แนบไฟล์รูปภาพ หรือเอกสาร (เลือกได้สูงสุด 5 ไฟล์)</label>
+                <input type="file" id="pubFile" multiple accept="image/*,.pdf,.doc,.docx">
+                <small style="color: var(--text-light); opacity: 0.8;">* กด Ctrl หรือ Shift ค้างไว้เพื่อเลือกหลายภาพพร้อมกัน</small>
             </div>
             <div class="form-group">
                 <label>อีเมล (สำหรับแจ้งอัปเดตสถานะ)</label>
@@ -481,7 +496,8 @@ header::after {
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzG3GWfQ5pdeTS-Mvxrt0tFPFA9X_WfKJNAt4AwbUhG1zFH50QCt5LLVWX4e1REYRAw/exec"; 
+    // ** อย่าลืมเปลี่ยน WEB_APP_URL เป็นของคุณหลังจาก Deploy แบบ New Deployment **
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzN5Wu0g5MHbrOtvVKdb5FU0Xi042hDhOVm_ijV92LDYawv9HGutOSJmw-n9Rc3MQP9/exec"; 
     let currentSubmittedRowId = null; 
 
     function switchTab(tabName) {
@@ -513,14 +529,24 @@ header::after {
         document.getElementById('adminPassword').value = '';
     }
 
-    function getFileData(fileInput) {
+    // ฟังก์ชันแปลงหลายไฟล์เป็น Base64 (สูงสุด 5 ไฟล์)
+    function getMultipleFilesData(fileInput) {
         return new Promise((resolve) => {
-            const file = fileInput.files[0];
-            if (!file) { resolve(null); return; }
-            const reader = new FileReader();
-            reader.onload = () => resolve({ base64: reader.result.split(',')[1], name: file.name, mimeType: file.type });
-            reader.onerror = () => resolve(null);
-            reader.readAsDataURL(file);
+            const files = Array.from(fileInput.files).slice(0, 5); // จำกัด 5 ไฟล์
+            if (files.length === 0) { resolve([]); return; }
+
+            let filePromises = files.map(file => {
+                return new Promise((res) => {
+                    const reader = new FileReader();
+                    reader.onload = () => res({ base64: reader.result.split(',')[1], name: file.name, mimeType: file.type });
+                    reader.onerror = () => res(null);
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(filePromises).then(results => {
+                resolve(results.filter(item => item !== null));
+            });
         });
     }
 
@@ -541,7 +567,7 @@ header::after {
         try {
             if (userType === 'เจ้าหน้าที่') {
                 const checkedPr = Array.from(document.querySelectorAll('input[name="prType"]:checked')).map(el => el.value);
-                if (checkedPr.length === 0) { alert('กรุณาเลือกประเภทงาน PR'); submitBtn.disabled = false; return; }
+                if (checkedPr.length === 0) { alert('กรุณาเลือกประเภทงาน PR'); submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ'; return; }
                 
                 formData.name = document.getElementById('staffName').value;
                 formData.contact = document.getElementById('staffDivision').value;
@@ -550,8 +576,7 @@ header::after {
                 formData.details = document.getElementById('staffDetails').value;
                 formData.email = document.getElementById('staffEmail').value;
                 
-                let fileObj = await getFileData(document.getElementById('staffFile'));
-                if(fileObj) { formData.fileData = fileObj.base64; formData.fileName = fileObj.name; formData.fileMimeType = fileObj.mimeType; }
+                formData.files = await getMultipleFilesData(document.getElementById('staffFile'));
                 document.getElementById('staffForm').reset();
             } else {
                 formData.name = document.getElementById('pubName').value;
@@ -561,8 +586,7 @@ header::after {
                 formData.details = document.getElementById('pubDetails').value;
                 formData.email = document.getElementById('pubEmail').value;
                 
-                let fileObj = await getFileData(document.getElementById('pubFile'));
-                if(fileObj) { formData.fileData = fileObj.base64; formData.fileName = fileObj.name; formData.fileMimeType = fileObj.mimeType; }
+                formData.files = await getMultipleFilesData(document.getElementById('pubFile'));
                 document.getElementById('publicForm').reset();
             }
 
@@ -597,7 +621,6 @@ header::after {
         }).then(() => { fetchDataRealtime(); });
     }
 
-    // ฟังก์ชันจัดการดึงเลขเวลาแบบปลอดภัย 100% ป้องกันข้อผิดพลาด String Split
     function parseStringToMs(dateStr) {
         if (!dateStr || dateStr === '-') return 0;
         try {
@@ -625,7 +648,6 @@ header::after {
         .then(res => res.json())
         .then(data => {
             if (!data || !Array.isArray(data)) return;
-            // จัดเรียงแบบปลอดภัย: ล่าสุดอยู่บนสุดตาม Timestamp เสมอ
             const sortedData = [...data].sort((a, b) => parseStringToMs(b.timestamp) - parseStringToMs(a.timestamp));
             renderTableHTML(sortedData);
         })
@@ -636,19 +658,14 @@ header::after {
         if (!statusValue) return;
 
         let rejectReason = "";
-        
-        // หากเลือก "ไม่อนุมัติ" ให้แสดง Prompt ถามเหตุผล
         if (statusValue === "ไม่อนุมัติ") {
             rejectReason = prompt("กรุณาระบุเหตุผลในการไม่อนุมัติคำขอนี้:");
-            
-            // ถ้ากด Cancel (ยกเลิก) ให้รีโหลดข้อมูลเพื่อคืนค่า Dropdown ที่เดิม
             if (rejectReason === null) {
                 fetchDataRealtime();
                 return;
             }
         }
 
-        // ส่งค่า status และ rejectReason ไปอัปเดตที่ Apps Script
         sendDataToAppsScript({
             action: 'updateStatus',
             rowId: rowId,
@@ -659,115 +676,103 @@ header::after {
     }
 
     function renderTableHTML(dataList) {
-    const userBody = document.getElementById('userTableBody');
-    const adminBody = document.getElementById('adminTableBody');
-    userBody.innerHTML = ''; adminBody.innerHTML = '';
+        const userBody = document.getElementById('userTableBody');
+        const adminBody = document.getElementById('adminTableBody');
+        userBody.innerHTML = ''; adminBody.innerHTML = '';
 
-    if(!dataList || dataList.length === 0) {
-        userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
-        adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
-        return;
-    }
-
-    // ฟังก์ชันช่วยแปลง ISO String หรือรูปแบบวันที่ดิบให้เป็นแบบไทยที่ถูกต้อง
-    function formatToThaiStyle(dateStr) {
-        if (!dateStr || dateStr === '-') return '-';
-        if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
-        
-        try {
-            if (dateStr.includes('T') && dateStr.includes('Z')) {
-                let parts = dateStr.split('T');
-                let dateParts = parts[0].split('-'); 
-                let timeParts = parts[1].split(':'); 
-                
-                if (dateParts.length === 3) {
-                    let year = dateParts[0];
-                    let month = dateParts[1];
-                    let day = dateParts[2];
-                    let hr = timeParts[0];
-                    let min = timeParts[1];
-                    
-                    let hourInt = parseInt(hr) + 7;
-                    if (hourInt >= 24) {
-                        hourInt = hourInt - 24;
-                        let dayInt = parseInt(day) + 1;
-                        day = String(dayInt).padStart(2, '0');
-                    }
-                    hr = String(hourInt).padStart(2, '0');
-                    
-                    return `${day}/${month}/${year} ${hr}:${min} น.`;
-                }
-            }
-            
-            let cleanStr = dateStr.toString().trim();
-            if (cleanStr.includes('/') && !cleanStr.includes('น.')) {
-                return cleanStr + ' น.';
-            }
-            return cleanStr;
-        } catch (e) {
-            return dateStr;
+        if(!dataList || dataList.length === 0) {
+            userBody.innerHTML = '<tr><td colspan="9" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+            adminBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">ไม่พบข้อมูลคำขอในระบบ</td></tr>';
+            return;
         }
-    }
 
-    dataList.forEach(item => {
-        let badgeClass = 'status-pending';
-        if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
-        if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
+        function formatToThaiStyle(dateStr) {
+            if (!dateStr || dateStr === '-') return '-';
+            if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
+            try {
+                if (dateStr.includes('T') && dateStr.includes('Z')) {
+                    let parts = dateStr.split('T');
+                    let dateParts = parts[0].split('-'); 
+                    let timeParts = parts[1].split(':'); 
+                    if (dateParts.length === 3) {
+                        let year = dateParts[0];
+                        let month = dateParts[1];
+                        let day = dateParts[2];
+                        let hr = timeParts[0];
+                        let min = timeParts[1];
+                        let hourInt = parseInt(hr) + 7;
+                        if (hourInt >= 24) { hourInt = hourInt - 24; day = String(parseInt(day) + 1).padStart(2, '0'); }
+                        hr = String(hourInt).padStart(2, '0');
+                        return `${day}/${month}/${year} ${hr}:${min} น.`;
+                    }
+                }
+                let cleanStr = dateStr.toString().trim();
+                return (cleanStr.includes('/') && !cleanStr.includes('น.')) ? cleanStr + ' น.' : cleanStr;
+            } catch (e) {
+                return dateStr;
+            }
+        }
 
-        let adminFileHtml = (item.fileLink && item.fileLink !== '-') ? `<a href="${item.fileLink}" target="_blank" style="color:var(--light-blue);font-weight:600;"><i class="fa-solid fa-cloud-arrow-down"></i> ดาวน์โหลดไฟล์</a>` : '-';
-        let userFileHtml = (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("ข้อผิดพลาด")) ? `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มีไฟล์แนบ</span>` : '-';
+        dataList.forEach(item => {
+            let badgeClass = 'status-pending';
+            if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
+            if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-        let displayTimestamp = formatToThaiStyle(item.timestamp);
-        let displayDateTime = formatToThaiStyle(item.dateTime);
+            // จัดการ ลิงก์แนบไฟล์หลายไฟล์
+            let adminFileHtml = '-';
+            let userFileHtml = '-';
 
-        // ตรวจสอบเหตุผลการไม่อนุมัติ หากมีให้สร้างข้อความสีแดงขึ้นบรรทัดใหม่
-        let rejectReasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) 
-            ? `<br><small style="color: var(--status-reject, #dc3545); font-weight: 500; display: block; margin-top: 4px;">(เหตุผล: ${item.rejectReason})</small>` 
-            : '';
+            if (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("เกิดข้อผิดพลาด")) {
+                let links = item.fileLink.split(',');
+                adminFileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-file-arrow-down"></i> ไฟล์ ${idx + 1}</a>`).join('');
+                userFileHtml = `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มี ${links.length} ไฟล์</span>`;
+            }
 
-        userBody.innerHTML += `
-            <tr>
-                <td>${displayTimestamp}</td>
-                <td><b>${item.userType || '-'}</b></td>
-                <td>${item.name || '-'}</td>
-                <td>${item.contact || '-'}</td>
-                <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                <td><strong>${displayDateTime}</strong></td>
-                <td>${userFileHtml}</td>
-                <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
-                <td>
-                    <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
-                    ${rejectReasonHtml}
-                </td>
-            </tr>
-        `;
+            let displayTimestamp = formatToThaiStyle(item.timestamp);
+            let displayDateTime = formatToThaiStyle(item.dateTime);
 
-        adminBody.innerHTML += `
-            <tr>
-                <td>${displayTimestamp}</td>
-                <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
-                <td>${item.contact || '-'}</td>
-                <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
-                <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
-                <td>${adminFileHtml}</td>
-                <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto; flex-grow: 1;">
+            let rejectReasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) 
+                ? `<br><small style="color: var(--status-reject); font-weight: 500; display: block; margin-top: 4px;">(เหตุผล: ${item.rejectReason})</small>` 
+                : '';
+
+            userBody.innerHTML += `
+                <tr>
+                    <td>${displayTimestamp}</td>
+                    <td><b>${item.userType || '-'}</b></td>
+                    <td>${item.name || '-'}</td>
+                    <td>${item.contact || '-'}</td>
+                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
+                    <td><strong>${displayDateTime}</strong></td>
+                    <td>${userFileHtml}</td>
+                    <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
+                    <td>
+                        <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
+                        ${rejectReasonHtml}
+                    </td>
+                </tr>
+            `;
+
+            adminBody.innerHTML += `
+                <tr>
+                    <td>${displayTimestamp}</td>
+                    <td>[${item.userType || '-'}] <b>${item.name || '-'}</b><br><small>${item.email || 'ไม่มีเมล'}</small></td>
+                    <td>${item.contact || '-'}</td>
+                    <td><b style="color:var(--primary-blue);">${displayDateTime}</b></td>
+                    <td><u>${item.prType || '-'}</u><br>${item.details || ''}<br><span style="color:purple; font-size:12px;">ประเมิน: ${item.rating || '-'}</span></td>
+                    <td>${adminFileHtml}</td>
+                    <td><span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span></td>
+                    <td>
+                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:5px; width:auto;">
                             <option value="">--เปลี่ยนสถานะ--</option>
                             <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
                             <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
                             <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
                         </select>
-                        <button onclick="deleteRequestRealtime('${item.rowId}')" style="background:none; color:crimson; border:none; padding:5px; border-radius:4px; cursor:pointer; font-size:16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="ลบคำขอนี้"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-// ฟังก์ชันสำหรับเรียกคำสั่งเพิ่มเติม
+                    </td>
+                </tr>
+            `;
+        });
+    }
 </script>
 </body>
 </html>
