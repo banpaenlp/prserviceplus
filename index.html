@@ -494,13 +494,14 @@
         </div>
     </div>
 
-    <div id="admin-login-tab" class="card">
+    <!-- ปรับปรุงส่วนเข้าสู่ระบบ Admin ให้อยู่กึ่งกลาง Card -->
+    <div id="admin-login-tab" class="card" style="text-align: center; max-width: 500px; margin: 0 auto 30px auto;">
         <h2><i class="fa-solid fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่แอดมิน</h2>
         <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
-        <div class="form-group" style="max-width: 400px;">
-            <label>รหัสผ่านเข้าสู่ระบบ (Password)</label>
+        <div class="form-group" style="max-width: 400px; margin: 0 auto;">
+            <label style="text-align: left;">รหัสผ่านเข้าสู่ระบบ (Password)</label>
             <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่าน">
-            <button class="btn btn-secondary" style="margin-top: 15px;" onclick="loginAdmin()">เข้าสู่ระบบ</button>
+            <button class="btn btn-secondary" style="margin-top: 15px; width: 100%; justify-content: center;" onclick="loginAdmin()">เข้าสู่ระบบ</button>
         </div>
     </div>
 
@@ -549,7 +550,6 @@
 </div>
 
 <script>
-    // Web App URL จาก Google Apps Script
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzN5Wu0g5MHbrOtvVKdb5FU0Xi042hDhOVm_ijV92LDYawv9HGutOSJmw-n9Rc3MQP9/exec"; 
     let currentSubmittedRowId = null; 
 
@@ -582,7 +582,6 @@
         document.getElementById('adminPassword').value = '';
     }
 
-    // ฟังก์ชันแปลงหลายไฟล์เป็น Base64 (สูงสุด 5 ไฟล์)
     function getMultipleFilesData(fileInput) {
         return new Promise((resolve) => {
             const files = Array.from(fileInput.files).slice(0, 5);
@@ -829,7 +828,6 @@
         });
     }
 
-    // โหลดข้อมูลอัตโนมัติเมื่อเปิดหน้าเว็บ
     window.onload = function() {
         fetchDataRealtime();
     };
