@@ -46,128 +46,77 @@
             padding: 20px;
         }
 
-        /* --- Header ดีไซน์ใหม่ BANPAEN SMART SERVICE --- */
+        /* --- Header ดีไซน์ใหม่ Modern Digital & Clean --- */
         header {
-            background: linear-gradient(135deg, #031B4E 0%, #0A369D 50%, #1E88E5 100%);
+            background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
+            background-size: 400% 400%;
             color: white;
+            padding: 40px 20px;
             border-radius: 20px;
             box-shadow: 0 12px 30px rgba(10, 54, 157, 0.22);
             margin-bottom: 30px;
+            text-align: center;
             position: relative;
             overflow: hidden;
+            animation: digitalBackgroundWave 15s ease infinite;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 50px; /* เว้นพื้นที่ให้คลื่นด้านล่าง */
         }
 
-        /* Top Bar */
-        .header-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 25px;
-            background: rgba(0, 0, 0, 0.25);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 13px;
-            letter-spacing: 0.5px;
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.18), transparent);
+            transform: skewX(-25deg);
+            animation: digitalLightPulse 6s ease-in-out infinite;
         }
 
-        .smart-service-tag {
-            color: #FFD166;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        @keyframes digitalBackgroundWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .lang-switch {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lang-switch:hover {
-            background: var(--primary-orange);
-        }
-
-        /* Main Content ใน Header */
-        .header-main {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            padding: 30px 25px 10px 25px;
-            flex-wrap: wrap;
+        @keyframes digitalLightPulse {
+            0% { left: -100%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
         }
 
         .logo-placeholder {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 24px;
-            border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
             transition: transform 0.3s ease;
-            max-width: 240px;
         }
 
         .logo-placeholder:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
-        .header-text-content {
-            text-align: left;
+        .header-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
         }
 
-        .header-title {
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1.2;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header-subtitle {
-            font-size: 16px;
-            font-weight: 400;
-            opacity: 0.95;
-            margin-top: 4px;
-        }
-
-        .header-divider {
-            height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
-            margin: 10px 0;
-            border: none;
-        }
-
-        .header-slogan {
-            font-size: 14px;
-            font-weight: 300;
-            color: #FFD166;
-            font-style: italic;
+        .header-badge-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
             letter-spacing: 0.3px;
-        }
-
-        /* Wave Dynamic Divider (ขอบล่างสีส้ม-ขาว พริ้วไหว) */
-        .header-waves {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            overflow: hidden;
-            line-height: 0;
-        }
-
-        .header-waves svg {
-            position: relative;
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 50px;
         }
 
         /* --- Nav & Tabs --- */
@@ -239,6 +188,7 @@
             outline: none;
         }
 
+        /* เอฟเฟกต์เมื่อผู้ใช้กดคลิกพิมพ์ (Focus State) -> เปลี่ยนขอบเป็นสีส้ม + เงาส้มอ่อน */
         input[type="text"]:focus, 
         input[type="email"]:focus, 
         input[type="tel"]:focus, 
@@ -268,6 +218,7 @@
             user-select: none;
         }
 
+        /* เปลี่ยนสีปุ่ม Checkbox ให้เป็นสีส้ม */
         input[type="checkbox"] {
             accent-color: var(--primary-orange);
             width: 18px;
@@ -404,8 +355,6 @@
         .stars label:hover, .stars label:hover ~ label, .stars input:checked ~ label { color: #FFC107; }
 
         @media (max-width: 768px) {
-            .header-main { flex-direction: column; text-align: center; }
-            .header-text-content { text-align: center; }
             .nav-tabs { flex-direction: column; }
             th, td { padding: 10px; font-size: 13px; }
         }
@@ -415,32 +364,16 @@
 
 <div class="container">
     <header>
-        <!-- แถบบนสุด (Top Bar) -->
-        <div class="header-top-bar">
-            <span class="smart-service-tag"><i class="fa-solid fa-sparkles"></i> BANPAEN SMART SERVICE</span>
-            <span class="lang-switch">[ TH / EN ]</span>
+        <div class="logo-placeholder">
+            <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 100px; max-width: 100%; object-fit: contain;">
         </div>
-
-        <!-- เนื้อหาหลัก Header -->
-        <div class="header-main">
-            <div class="logo-placeholder">
-                <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 85px; max-width: 100%; object-fit: contain;">
-            </div>
-            <div class="header-text-content">
-                <h1 class="header-title">PR Service plus+</h1>
-                <p class="header-subtitle">ระบบขอใช้บริการงานประชาสัมพันธ์</p>
-                <p style="font-size: 13px; opacity: 0.85;">กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
-                <hr class="header-divider">
-                <p class="header-slogan">"บริการฉับไว ใส่ใจสื่อสาร เพื่อพี่น้องชาวบ้านแป้น"</p>
-            </div>
-        </div>
-
-        <!-- ลวดลายคลื่นสีส้ม-ขาว พริ้วไหวที่ขอบล่าง (Wave Dynamic Divider) -->
-        <div class="header-waves">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M0,0 C150,90 350,-40 500,60 C650,160 900,10 1200,40 L1200,120 L0,120 Z" fill="#FF7F11" opacity="0.65"></path>
-                <path d="M0,30 C200,100 450,10 700,70 C950,130 1100,20 1200,50 L1200,120 L0,120 Z" fill="#ffffff"></path>
-            </svg>
+        <h1 style="font-size: 30px; font-weight: 700; letter-spacing: 0.5px;">PR Service plus+</h1>
+        <p style="font-weight: 300; opacity: 0.9;">ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
+        
+        <div class="header-badges">
+            <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
+            <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
+            <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
         </div>
     </header>
 
@@ -561,6 +494,7 @@
         </div>
     </div>
 
+    <!-- ปรับปรุงส่วนเข้าสู่ระบบ Admin ให้อยู่กึ่งกลาง Card -->
     <div id="admin-login-tab" class="card" style="text-align: center; max-width: 500px; margin: 0 auto 30px auto;">
         <h2><i class="fa-solid fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่แอดมิน</h2>
         <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
