@@ -309,6 +309,7 @@
             font-weight: 600;
             margin: 2px;
             border: 1px solid #C4D9F2;
+            cursor: pointer;
         }
 
         .file-link-btn:hover {
@@ -575,6 +576,11 @@
         document.getElementById('adminPassword').value = '';
     }
 
+    // ฟังก์ชันสำหรับผู้ใช้งานทั่วไปเมื่อกดที่ปุ่มไฟล์แนบ
+    function restrictedFileAlert() {
+        alert('เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเปิดดูไฟล์แนบได้');
+    }
+
     function getMultipleFilesData(fileInput) {
         return new Promise((resolve) => {
             const files = Array.from(fileInput.files).slice(0, 5);
@@ -763,15 +769,20 @@
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            let fileHtml = '-';
+            let adminFileHtml = '-';
+            let userFileHtml = '-';
+
             if (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("เกิดข้อผิดพลาด")) {
                 let links = item.fileLink.split(',');
-                fileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</a>`).join(' ');
+                // แอดมิน: เปิดลิงก์ตรงไปยังไฟล์ไดรฟ์
+                adminFileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</a>`).join(' ');
+                // บุคคลทั่วไป: แสดงปุ่มทรงเดียวกัน แต่เมื่อกดแล้วจะขึ้น alert แจ้งเตือน ล็อกไม่ให้เปิด
+                userFileHtml = links.map((link, idx) => `<span onclick="restrictedFileAlert()" class="file-link-btn" title="เฉพาะแอดมินเท่านั้น"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</span>`).join(' ');
             }
 
             let reasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) ? `<br><small style="color:red;">(เหตุผล: ${item.rejectReason})</small>` : '';
 
-            // User Table Row
+            // User Table Row (เห็นปุ่มแนบไฟล์ แต่คลิกแล้วแจ้งเตือนสิทธิ์)
             let userRow = document.createElement('tr');
             userRow.innerHTML = `
                 <td>${formatToThaiStyle(item.timestamp)}</td>
@@ -780,13 +791,13 @@
                 <td>${item.contact || '-'}</td>
                 <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
                 <td>${formatToThaiStyle(item.dateTime)}</td>
-                <td>${fileHtml}</td>
+                <td>${userFileHtml}</td>
                 <td><span style="color:#FF9F43; font-weight:600;">${item.rating || '-'}</span></td>
                 <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
             `;
             userBody.appendChild(userRow);
 
-            // Admin Table Row
+            // Admin Table Row (เห็นปุ่มแนบไฟล์ และคลิกเปิดดูได้ปกติ)
             let adminRow = document.createElement('tr');
             adminRow.innerHTML = `
                 <td>${formatToThaiStyle(item.timestamp)}</td>
@@ -794,7 +805,7 @@
                 <td>${item.contact || '-'}<br><small style="color:#7F8C8D;">${item.email || '-'}</small></td>
                 <td>${formatToThaiStyle(item.dateTime)}</td>
                 <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
-                <td>${fileHtml}</td>
+                <td>${adminFileHtml}</td>
                 <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
                 <td>
                     <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding: 5px; font-size:13px;">
