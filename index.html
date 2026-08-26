@@ -46,7 +46,6 @@
             padding: 20px;
         }
 
-        /* --- Header ดีไซน์ใหม่ Modern Digital & Clean --- */
         header {
             background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
             background-size: 400% 400%;
@@ -119,7 +118,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* --- Nav & Tabs --- */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -171,7 +169,6 @@
             color: var(--primary-blue);
         }
 
-        /* --- สไตล์ช่อง Input / Textarea / Select (ขอบส้มเมื่อคลิก/โฟกัส) --- */
         input[type="text"], 
         input[type="email"], 
         input[type="tel"], 
@@ -188,7 +185,6 @@
             outline: none;
         }
 
-        /* เอฟเฟกต์เมื่อผู้ใช้กดคลิกพิมพ์ (Focus State) -> เปลี่ยนขอบเป็นสีส้ม + เงาส้มอ่อน */
         input[type="text"]:focus, 
         input[type="email"]:focus, 
         input[type="tel"]:focus, 
@@ -200,7 +196,6 @@
             box-shadow: 0 0 0 3px rgba(255, 127, 17, 0.25) !important;
         }
 
-        /* --- สไตล์ Checkbox ติ๊กถูกสีส้ม --- */
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -218,7 +213,6 @@
             user-select: none;
         }
 
-        /* เปลี่ยนสีปุ่ม Checkbox ให้เป็นสีส้ม */
         input[type="checkbox"] {
             accent-color: var(--primary-orange);
             width: 18px;
@@ -494,7 +488,6 @@
         </div>
     </div>
 
-    <!-- ปรับปรุงส่วนเข้าสู่ระบบ Admin ให้อยู่กึ่งกลาง Card -->
     <div id="admin-login-tab" class="card" style="text-align: center; max-width: 500px; margin: 0 auto 30px auto;">
         <h2><i class="fa-solid fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่แอดมิน</h2>
         <hr style="margin: 15px 0; border: 1px solid var(--sky-blue);">
@@ -770,67 +763,58 @@
             if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
             if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
 
-            let adminFileHtml = '-';
-            let userFileHtml = '-';
-
+            let fileHtml = '-';
             if (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("เกิดข้อผิดพลาด")) {
                 let links = item.fileLink.split(',');
-                adminFileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-file-arrow-down"></i> ไฟล์ ${idx + 1}</a>`).join('');
-                userFileHtml = `<span style="color:var(--text-dark); font-weight:500;"><i class="fa-solid fa-paperclip" style="color:var(--primary-orange);"></i> มี ${links.length} ไฟล์</span>`;
+                fileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</a>`).join(' ');
             }
 
-            let displayTimestamp = formatToThaiStyle(item.timestamp);
-            let displayDateTime = formatToThaiStyle(item.dateTime);
+            let reasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) ? `<br><small style="color:red;">(เหตุผล: ${item.rejectReason})</small>` : '';
 
-            let rejectReasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) 
-                ? `<br><small style="color: var(--status-reject); font-weight: 500; display: block; margin-top: 4px;">(เหตุผล: ${item.rejectReason})</small>` 
-                : '';
-
-            userBody.innerHTML += `
-                <tr>
-                    <td>${displayTimestamp}</td>
-                    <td><b>${item.userType || '-'}</b></td>
-                    <td>${item.name || '-'}</td>
-                    <td>${item.contact || '-'}</td>
-                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                    <td><strong>${displayDateTime}</strong></td>
-                    <td>${userFileHtml}</td>
-                    <td style="color:#FFC107; font-weight:bold;">${item.rating || '-'}</td>
-                    <td>
-                        <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
-                        ${rejectReasonHtml}
-                    </td>
-                </tr>
+            // User Table Row
+            let userRow = document.createElement('tr');
+            userRow.innerHTML = `
+                <td>${formatToThaiStyle(item.timestamp)}</td>
+                <td>${item.userType || '-'}</td>
+                <td>${item.name || '-'}</td>
+                <td>${item.contact || '-'}</td>
+                <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
+                <td>${formatToThaiStyle(item.dateTime)}</td>
+                <td>${fileHtml}</td>
+                <td><span style="color:#FF9F43; font-weight:600;">${item.rating || '-'}</span></td>
+                <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
             `;
+            userBody.appendChild(userRow);
 
-            adminBody.innerHTML += `
-                <tr>
-                    <td>${displayTimestamp}</td>
-                    <td><b>${item.name || '-'}</b><br><small style="color:gray;">(${item.userType || '-'})</small></td>
-                    <td>${item.contact || '-'}<br><small style="color:gray;">${item.email || ''}</small></td>
-                    <td><strong>${displayDateTime}</strong></td>
-                    <td><u>${item.prType || '-'}</u><br><small style="color:gray;">${item.details || ''}</small></td>
-                    <td>${adminFileHtml}</td>
-                    <td>
-                        <span class="status-badge ${badgeClass}">${item.status || 'รอดำเนินการ'}</span>
-                        ${rejectReasonHtml}
-                    </td>
-                    <td>
-                        <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding: 5px; font-size: 13px;">
-                            <option value="">-- เปลี่ยนสถานะ --</option>
-                            <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
-                            <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
-                            <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
-                        </select>
-                    </td>
-                </tr>
+            // Admin Table Row
+            let adminRow = document.createElement('tr');
+            adminRow.innerHTML = `
+                <td>${formatToThaiStyle(item.timestamp)}</td>
+                <td>${item.name || '-'}<br><small style="color:#7F8C8D;">(${item.userType || '-'})</small></td>
+                <td>${item.contact || '-'}<br><small style="color:#7F8C8D;">${item.email || '-'}</small></td>
+                <td>${formatToThaiStyle(item.dateTime)}</td>
+                <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
+                <td>${fileHtml}</td>
+                <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
+                <td>
+                    <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding: 5px; font-size:13px;">
+                        <option value="">-- เปลี่ยนสถานะ --</option>
+                        <option value="อนุมัติ">อนุมัติ</option>
+                        <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+                        <option value="รอดำเนินการ">รอดำเนินการ</option>
+                    </select>
+                </td>
             `;
+            adminBody.appendChild(adminRow);
         });
     }
 
-    window.onload = function() {
+    // Load data on start and update every 5 seconds (Realtime)
+    document.addEventListener("DOMContentLoaded", () => {
         fetchDataRealtime();
-    };
+        setInterval(fetchDataRealtime, 5000);
+    });
 </script>
+
 </body>
 </html>
