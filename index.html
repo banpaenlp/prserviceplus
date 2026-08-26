@@ -298,23 +298,46 @@
         .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
         .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
 
+        /* สไตล์ปุ่มแนบไฟล์สีส้มสวยงาม (สำหรับแอดมิน - คลิกได้) */
         .file-link-btn {
-            display: inline-block;
-            background: var(--sky-blue);
-            color: var(--primary-blue);
-            padding: 3px 8px;
-            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #FF7F11, #FF9F43);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 500;
             margin: 2px;
-            border: 1px solid #C4D9F2;
-            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(255, 127, 17, 0.2);
+            transition: all 0.2s ease;
         }
 
         .file-link-btn:hover {
-            background: var(--primary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 127, 17, 0.4);
             color: white;
+        }
+
+        /* สไตล์ปุ่มแนบไฟล์สีส้ม (สำหรับคนทั่วไป - เห็น แต่กดไม่ได้) */
+        .file-link-disabled {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #FFEAD5;
+            color: #FF7F11;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 2px;
+            border: 1px solid #FFD0A3;
+            pointer-events: none; /* ห้ามคลิกสมบูรณ์แบบ */
+            cursor: not-allowed;
+            user-select: none;
+            opacity: 0.9;
         }
 
         .modal {
@@ -576,11 +599,6 @@
         document.getElementById('adminPassword').value = '';
     }
 
-    // ฟังก์ชันสำหรับผู้ใช้งานทั่วไปเมื่อกดที่ปุ่มไฟล์แนบ
-    function restrictedFileAlert() {
-        alert('เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเปิดดูไฟล์แนบได้');
-    }
-
     function getMultipleFilesData(fileInput) {
         return new Promise((resolve) => {
             const files = Array.from(fileInput.files).slice(0, 5);
@@ -774,15 +792,15 @@
 
             if (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("เกิดข้อผิดพลาด")) {
                 let links = item.fileLink.split(',');
-                // แอดมิน: เปิดลิงก์ตรงไปยังไฟล์ไดรฟ์
+                // แอดมิน: ปุ่มสีส้มสวยงาม สามารถคลิกเปิดไฟล์ได้
                 adminFileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</a>`).join(' ');
-                // บุคคลทั่วไป: แสดงปุ่มทรงเดียวกัน แต่เมื่อกดแล้วจะขึ้น alert แจ้งเตือน ล็อกไม่ให้เปิด
-                userFileHtml = links.map((link, idx) => `<span onclick="restrictedFileAlert()" class="file-link-btn" title="เฉพาะแอดมินเท่านั้น"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</span>`).join(' ');
+                // บุคคลทั่วไป: เห็นเป็นปุ่มสีส้มชัดเจน แต่คลิกไม่ได้ (pointer-events: none)
+                userFileHtml = links.map((link, idx) => `<span class="file-link-disabled"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</span>`).join(' ');
             }
 
             let reasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) ? `<br><small style="color:red;">(เหตุผล: ${item.rejectReason})</small>` : '';
 
-            // User Table Row (เห็นปุ่มแนบไฟล์ แต่คลิกแล้วแจ้งเตือนสิทธิ์)
+            // User Table Row
             let userRow = document.createElement('tr');
             userRow.innerHTML = `
                 <td>${formatToThaiStyle(item.timestamp)}</td>
@@ -797,7 +815,7 @@
             `;
             userBody.appendChild(userRow);
 
-            // Admin Table Row (เห็นปุ่มแนบไฟล์ และคลิกเปิดดูได้ปกติ)
+            // Admin Table Row
             let adminRow = document.createElement('tr');
             adminRow.innerHTML = `
                 <td>${formatToThaiStyle(item.timestamp)}</td>
