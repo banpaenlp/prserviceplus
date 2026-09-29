@@ -61,7 +61,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* Smart City Grid Overlay Effect */
         header::after {
             content: '';
             position: absolute;
@@ -73,7 +72,6 @@
             pointer-events: none;
         }
 
-        /* Digital Light Pulse Animation */
         header::before {
             content: '';
             position: absolute;
@@ -96,7 +94,6 @@
             gap: 30px;
         }
 
-        /* Square Logo Layout (Left Aligned) */
         .logo-placeholder {
             width: 110px;
             height: 110px;
@@ -201,7 +198,6 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive adjustment for Mobile */
         @media (max-width: 768px) {
             header {
                 padding: 25px 20px;
@@ -224,7 +220,6 @@
             }
         }
 
-        /* ==================== ORIGINAL STYLES BELOW ==================== */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -486,7 +481,6 @@
 <body>
 
 <div class="container">
-    <!-- ==================== NEW SMART CITY HEADER ==================== -->
     <header>
         <div class="header-content-wrapper">
             <div class="logo-placeholder">
@@ -751,7 +745,12 @@
         try {
             if (userType === 'เจ้าหน้าที่') {
                 const checkedPr = Array.from(document.querySelectorAll('input[name="prType"]:checked')).map(el => el.value);
-                if (checkedPr.length === 0) { alert('กรุณาเลือกประเภทงาน PR'); submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ'; return; }
+                if (checkedPr.length === 0) { 
+                    alert('กรุณาเลือกประเภทงาน PR'); 
+                    submitBtn.disabled = false; 
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งคำขอใช้บริการ'; 
+                    return; 
+                }
                 
                 formData.name = document.getElementById('staffName').value;
                 formData.contact = document.getElementById('staffDivision').value;
@@ -859,6 +858,31 @@
         });
     }
 
+    function formatToThaiStyle(dateStr) {
+        if (!dateStr || dateStr === '-') return '-';
+        if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
+        try {
+            if (dateStr.includes('T') && dateStr.includes('Z')) {
+                let parts = dateStr.split('T');
+                let dateParts = parts[0].split('-'); 
+                let timeParts = parts[1].split(':'); 
+                if (dateParts.length === 3) {
+                    let year = parseInt(dateParts[0]) + 543;
+                    let month = dateParts[1];
+                    let day = dateParts[2];
+                    let hr = parseInt(timeParts[0]) + 7;
+                    let min = timeParts[1];
+                    if (hr >= 24) hr -= 24;
+                    let hrStr = hr.toString().padStart(2, '0');
+                    return `${day}/${month}/${year} ${hrStr}:${min} น.`;
+                }
+            }
+            return dateStr;
+        } catch(e) {
+            return dateStr;
+        }
+    }
+
     function renderTableHTML(dataList) {
         const userBody = document.getElementById('userTableBody');
         const adminBody = document.getElementById('adminTableBody');
@@ -870,18 +894,67 @@
             return;
         }
 
-        function formatToThaiStyle(dateStr) {
-            if (!dateStr || dateStr === '-') return '-';
-            if (dateStr.includes('ตกลงตามหน้างาน')) return dateStr;
-            try {
-                if (dateStr.includes('T') && dateStr.includes('Z')) {
-                    let parts = dateStr.split('T');
-                    let dateParts = parts[0].split('-'); 
-                    let timeParts = parts[1].split(':'); 
-                    if (dateParts.length === 3) {
-                        let year = dateParts[0];
-                        let month = dateParts[1];
-                        let day = dateParts[2];
-                        let hr = timeParts[0];
-                        let min = timeParts[1];
+        dataList.forEach(item => {
+            let statusClass = 'status-pending';
+            if (item.status === 'อนุมัติ') statusClass = 'status-approve';
+            if (item.status === 'ไม่อนุมัติ') statusClass = 'status-reject';
+
+            let filesHTML = '-';
+            if (item.fileUrls && item.fileUrls.length > 0) {
+                filesHTML = item.fileUrls.map((url, index) => {
+                    if (url) {
+                        return `<a href="${url}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ที่ ${index + 1}</a>`;
+                    } else {
+                        return `<span class="file-link-disabled"><i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปโหลด (${index + 1})</span>`;
+                    }
+                }).join(' ');
+            }
+
+            let formattedDateTime = formatToThaiStyle(item.dateTime);
+
+            // User Table Row
+            let userRow = document.createElement('tr');
+            userRow.innerHTML = `
+                <td>${item.timestamp || '-'}</td>
+                <td>${item.userType || '-'}</td>
+                <td><strong>${item.name || '-'}</strong></td>
+                <td>${item.contact || '-'}</td>
+                <td><strong>${item.prType || '-'}</strong><br><small style="color:var(--text-light);">${item.details || ''}</small></td>
+                <td>${formattedDateTime}</td>
+                <td>${filesHTML}</td>
+                <td>${item.rating || '-'}</td>
+                <td><span class="status-badge ${statusClass}">${item.status || 'รอดำเนินการ'}</span></td>
+            `;
+            userBody.appendChild(userRow);
+
+            // Admin Table Row
+            let adminRow = document.createElement('tr');
+            adminRow.innerHTML = `
+                <td>${item.timestamp || '-'}</td>
+                <td><strong>${item.name || '-'}</strong><br><small>(${item.userType || '-'})</small></td>
+                <td>${item.contact || '-'}<br><small>${item.email || ''}</small></td>
+                <td>${formattedDateTime}</td>
+                <td><strong>${item.prType || '-'}</strong><br><small style="color:var(--text-light);">${item.details || ''}</small></td>
+                <td>${filesHTML}</td>
+                <td><span class="status-badge ${statusClass}">${item.status || 'รอดำเนินการ'}</span></td>
+                <td>
+                    <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding:4px 8px; font-size:12px;">
+                        <option value="">-- เปลี่ยนสถานะ --</option>
+                        <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
+                        <option value="อนุมัติ" ${item.status === 'อนุมัติ' ? 'selected' : ''}>อนุมัติ</option>
+                        <option value="ไม่อนุมัติ" ${item.status === 'ไม่อนุมัติ' ? 'selected' : ''}>ไม่อนุมัติ</option>
+                    </select>
+                </td>
+            `;
+            adminBody.appendChild(adminRow);
+        });
+    }
+
+    // Auto fetch data on initial load
+    window.onload = function() {
+        fetchDataRealtime();
+    };
+</script>
+</body>
+</html>
                         let hourInt = parseInt(hr) + 7;
