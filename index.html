@@ -11,18 +11,19 @@
     
     <style>
         :root {
-            --bg-color: #ffffff;
-            --primary-blue: #0A369D;
-            --light-blue: #4A90E2;
+            --bg-color: #f4f8fc;
+            --primary-blue: #0B2545;
+            --smart-cyan: #00D2FF;
+            --light-blue: #0072FF;
             --sky-blue: #EBF3FC;
-            --primary-orange: #FF7F11;
+            --primary-orange: #FF6B00;
             --light-orange: #FFF3E6;
-            --text-dark: #2C3E50;
-            --text-light: #7F8C8D;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
             --status-pending: #FF7F11;
             --status-approve: #2ECC71;
             --status-reject: #E74C3C;
-            --digital-glow: rgba(74, 144, 226, 0.15);
+            --digital-glow: rgba(0, 210, 255, 0.15);
         }
 
         * {
@@ -36,8 +37,8 @@
             background-color: var(--bg-color);
             color: var(--text-dark);
             line-height: 1.6;
-            background-image: radial-gradient(var(--digital-glow) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-image: radial-gradient(rgba(0, 114, 255, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
 
         .container {
@@ -46,78 +47,184 @@
             padding: 20px;
         }
 
+        /* ==================== SMART CITY HEADER DESIGN ==================== */
         header {
-            background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
-            background-size: 400% 400%;
+            background: linear-gradient(135deg, #031B4E 0%, #0B2545 40%, #003B73 70%, #0072FF 100%);
             color: white;
-            padding: 40px 20px;
-            border-radius: 20px;
-            box-shadow: 0 12px 30px rgba(10, 54, 157, 0.22);
+            padding: 35px 40px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 59, 115, 0.25), 0 0 20px rgba(0, 210, 255, 0.15);
             margin-bottom: 30px;
-            text-align: center;
             position: relative;
             overflow: hidden;
-            animation: digitalBackgroundWave 15s ease infinite;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            backdrop-filter: blur(10px);
         }
 
+        /* Smart City Grid Overlay Effect */
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        /* Digital Light Pulse Animation */
         header::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.18), transparent);
-            transform: skewX(-25deg);
-            animation: digitalLightPulse 6s ease-in-out infinite;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.12) 0%, transparent 60%);
+            animation: smartPulse 8s infinite ease-in-out;
+            pointer-events: none;
         }
 
-        @keyframes digitalBackgroundWave {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes smartPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.9; }
         }
 
-        @keyframes digitalLightPulse {
-            0% { left: -100%; }
-            20% { left: 150%; }
-            100% { left: 150%; }
+        .header-content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 30px;
         }
 
+        /* Square Logo Layout (Left Aligned) */
         .logo-placeholder {
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto 15px auto;
+            width: 110px;
+            height: 110px;
+            min-width: 110px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 15px rgba(0, 210, 255, 0.4);
+            border: 2px solid var(--smart-cyan);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 24px;
-            border-radius: 14px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .logo-placeholder:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255, 107, 0, 0.3), 0 0 20px rgba(0, 210, 255, 0.6);
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .header-text-details {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header-title-container h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #FFFFFF 0%, #E0F7FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .smart-tag {
+            background: linear-gradient(135deg, var(--primary-orange), #FF9F43);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            font-weight: 300;
+            color: #C2E7FF;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .header-badges {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 12px;
-            margin-top: 18px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
         .header-badge-item {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 7px 18px;
-            border-radius: 20px;
-            font-size: 13.5px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #F0F9FF;
+            border: 1px solid rgba(0, 210, 255, 0.3);
             letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
 
+        .header-badge-item i {
+            color: var(--smart-cyan);
+        }
+
+        .header-badge-item:hover {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustment for Mobile */
+        @media (max-width: 768px) {
+            header {
+                padding: 25px 20px;
+            }
+            .header-content-wrapper {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-text-details {
+                text-align: center;
+            }
+            .header-title-container {
+                justify-content: center;
+            }
+            .header-subtitle {
+                justify-content: center;
+            }
+            .header-badges {
+                justify-content: center;
+            }
+        }
+
+        /* ==================== ORIGINAL STYLES BELOW ==================== */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -193,7 +300,7 @@
         select:focus, 
         textarea:focus {
             border-color: var(--primary-orange) !important;
-            box-shadow: 0 0 0 3px rgba(255, 127, 17, 0.25) !important;
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25) !important;
         }
 
         .checkbox-grid {
@@ -242,7 +349,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 127, 17, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
         }
 
         .btn:disabled {
@@ -298,7 +405,6 @@
         .status-approve { background-color: #E8F8F0; color: var(--status-approve); }
         .status-reject { background-color: #FDE8E8; color: var(--status-reject); }
 
-        /* สไตล์ปุ่มแนบไฟล์สีส้มสวยงาม (สำหรับแอดมิน - คลิกได้) */
         .file-link-btn {
             display: inline-flex;
             align-items: center;
@@ -321,7 +427,6 @@
             color: white;
         }
 
-        /* สไตล์ปุ่มแนบไฟล์สีส้ม (สำหรับคนทั่วไป - เห็น แต่กดไม่ได้) */
         .file-link-disabled {
             display: inline-flex;
             align-items: center;
@@ -334,7 +439,7 @@
             font-weight: 500;
             margin: 2px;
             border: 1px solid #FFD0A3;
-            pointer-events: none; /* ห้ามคลิกสมบูรณ์แบบ */
+            pointer-events: none;
             cursor: not-allowed;
             user-select: none;
             opacity: 0.9;
@@ -381,17 +486,27 @@
 <body>
 
 <div class="container">
+    <!-- ==================== NEW SMART CITY HEADER ==================== -->
     <header>
-        <div class="logo-placeholder">
-            <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 80px; max-width: 100%; object-fit: contain;">
-        </div>
-        <h1 style="font-size: 30px; font-weight: 700; letter-spacing: 0.5px;">PR Service plus+</h1>
-        <p style="font-weight: 300; opacity: 0.9;">ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
-        
-        <div class="header-badges">
-            <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
-            <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
-            <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
+        <div class="header-content-wrapper">
+            <div class="logo-placeholder">
+                <img src="logoprs+.png" alt="PR Service Plus+ Logo">
+            </div>
+            <div class="header-text-details">
+                <div class="header-title-container">
+                    <h1>PR Service Plus+</h1>
+                    <span class="smart-tag"><i class="fa-solid fa-bolt"></i> Smart Service</span>
+                </div>
+                <p class="header-subtitle">
+                    <i class="fa-solid fa-building-user"></i>
+                    แพลตฟอร์มขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น
+                </p>
+                <div class="header-badges">
+                    <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
+                    <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
+                    <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -770,80 +885,3 @@
                         let hr = timeParts[0];
                         let min = timeParts[1];
                         let hourInt = parseInt(hr) + 7;
-                        if (hourInt >= 24) { hourInt = hourInt - 24; day = String(parseInt(day) + 1).padStart(2, '0'); }
-                        hr = String(hourInt).padStart(2, '0');
-                        return `${day}/${month}/${year} ${hr}:${min} น.`;
-                    }
-                }
-                let cleanStr = dateStr.toString().trim();
-                return (cleanStr.includes('/') && !cleanStr.includes('น.')) ? cleanStr + ' น.' : cleanStr;
-            } catch (e) {
-                return dateStr;
-            }
-        }
-
-        dataList.forEach(item => {
-            let badgeClass = 'status-pending';
-            if(item.status === 'อนุมัติ') badgeClass = 'status-approve';
-            if(item.status === 'ไม่อนุมัติ') badgeClass = 'status-reject';
-
-            let adminFileHtml = '-';
-            let userFileHtml = '-';
-
-            if (item.fileLink && item.fileLink !== '-' && !item.fileLink.includes("เกิดข้อผิดพลาด")) {
-                let links = item.fileLink.split(',');
-                // แอดมิน: ปุ่มสีส้มสวยงาม สามารถคลิกเปิดไฟล์ได้
-                adminFileHtml = links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="file-link-btn"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</a>`).join(' ');
-                // บุคคลทั่วไป: เห็นเป็นปุ่มสีส้มชัดเจน แต่คลิกไม่ได้ (pointer-events: none)
-                userFileHtml = links.map((link, idx) => `<span class="file-link-disabled"><i class="fa-solid fa-paperclip"></i> ไฟล์ ${idx + 1}</span>`).join(' ');
-            }
-
-            let reasonHtml = (item.status === 'ไม่อนุมัติ' && item.rejectReason) ? `<br><small style="color:red;">(เหตุผล: ${item.rejectReason})</small>` : '';
-
-            // User Table Row
-            let userRow = document.createElement('tr');
-            userRow.innerHTML = `
-                <td>${formatToThaiStyle(item.timestamp)}</td>
-                <td>${item.userType || '-'}</td>
-                <td>${item.name || '-'}</td>
-                <td>${item.contact || '-'}</td>
-                <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
-                <td>${formatToThaiStyle(item.dateTime)}</td>
-                <td>${userFileHtml}</td>
-                <td><span style="color:#FF9F43; font-weight:600;">${item.rating || '-'}</span></td>
-                <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
-            `;
-            userBody.appendChild(userRow);
-
-            // Admin Table Row
-            let adminRow = document.createElement('tr');
-            adminRow.innerHTML = `
-                <td>${formatToThaiStyle(item.timestamp)}</td>
-                <td>${item.name || '-'}<br><small style="color:#7F8C8D;">(${item.userType || '-'})</small></td>
-                <td>${item.contact || '-'}<br><small style="color:#7F8C8D;">${item.email || '-'}</small></td>
-                <td>${formatToThaiStyle(item.dateTime)}</td>
-                <td><strong>${item.prType || '-'}</strong><br><small style="color:#666;">${item.details || ''}</small></td>
-                <td>${adminFileHtml}</td>
-                <td><span class="status-badge ${badgeClass}">${item.status}${reasonHtml}</span></td>
-                <td>
-                    <select onchange="changeStatusRealtime('${item.rowId}', this.value, '${item.email || ''}')" style="padding: 5px; font-size:13px;">
-                        <option value="">-- เปลี่ยนสถานะ --</option>
-                        <option value="อนุมัติ">อนุมัติ</option>
-                        <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
-                        <option value="รอดำเนินการ">รอดำเนินการ</option>
-                    </select>
-                </td>
-            `;
-            adminBody.appendChild(adminRow);
-        });
-    }
-
-    // Load data on start and update every 5 seconds (Realtime)
-    document.addEventListener("DOMContentLoaded", () => {
-        fetchDataRealtime();
-        setInterval(fetchDataRealtime, 5000);
-    });
-</script>
-
-</body>
-</html>
