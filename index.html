@@ -46,76 +46,166 @@
             padding: 20px;
         }
 
+        /* ==================== SMART CITY HEADER DESIGN ==================== */
         header {
-            background: linear-gradient(-45deg, #031B4E, #0A369D, #1E88E5, #0A369D);
-            background-size: 400% 400%;
+            background: linear-gradient(135deg, #021024 0%, #0B2545 35%, #004B87 70%, #FF6B00 100%);
+            background-size: 200% 200%;
+            animation: smartCityGradient 12s ease infinite;
             color: white;
-            padding: 40px 20px;
+            padding: 30px 35px;
             border-radius: 20px;
-            box-shadow: 0 12px 30px rgba(10, 54, 157, 0.22);
+            box-shadow: 0 15px 35px rgba(2, 16, 36, 0.3), 0 0 25px rgba(0, 210, 255, 0.2);
             margin-bottom: 30px;
-            text-align: center;
             position: relative;
             overflow: hidden;
-            animation: digitalBackgroundWave 15s ease infinite;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.35);
         }
 
+        /* Ambient Motion Graphics (Background Grid & Waves) */
         header::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.18), transparent);
-            transform: skewX(-25deg);
-            animation: digitalLightPulse 6s ease-in-out infinite;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.08) 1px, transparent 1px);
+            background-size: 25px 25px;
+            pointer-events: none;
         }
 
-        @keyframes digitalBackgroundWave {
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.15) 0%, rgba(0, 210, 255, 0.1) 40%, transparent 70%);
+            animation: digitalGlowPulse 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes smartCityGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes digitalLightPulse {
-            0% { left: -100%; }
-            20% { left: 150%; }
-            100% { left: 150%; }
+        @keyframes digitalGlowPulse {
+            0%, 100% { transform: scale(0.85); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; }
         }
 
+        .header-content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* Square Logo Style (Left Aligned) */
         .logo-placeholder {
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto 15px auto;
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25), 0 0 15px rgba(0, 210, 255, 0.4);
+            border: 2px solid #00D2FF;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 24px;
-            border-radius: 14px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .logo-placeholder:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            border-color: #FF6B00;
+            box-shadow: 0 10px 25px rgba(255, 107, 0, 0.4);
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .header-text-details {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header-title-container h1 {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #FFFFFF 0%, #E0F7FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .smart-tag {
+            background: linear-gradient(135deg, #FF6B00, #FF9F43);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.8px;
+            box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
+        }
+
+        .header-subtitle {
+            font-size: 14.5px;
+            font-weight: 300;
+            color: #D0E8FF;
+            margin-top: 4px;
         }
 
         .header-badges {
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 18px;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-top: 14px;
             flex-wrap: wrap;
         }
 
         .header-badge-item {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 7px 18px;
-            border-radius: 20px;
-            font-size: 13.5px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            letter-spacing: 0.3px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            padding: 5px 14px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            color: #FFFFFF;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .header-badge-item i {
+            color: #00D2FF;
+        }
+
+        .header-badge-item:hover {
+            background: rgba(0, 210, 255, 0.25);
+            border-color: #FF6B00;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 25px 20px; }
+            .header-content-wrapper { flex-direction: column; text-align: center; }
+            .header-text-details { text-align: center; }
+            .header-title-container, .header-badges { justify-content: center; }
         }
 
         .nav-tabs {
@@ -382,16 +472,27 @@
 
 <div class="container">
     <header>
-        <div class="logo-placeholder">
-            <img src="logoprs+.png" alt="PR Service plus+ Logo" style="max-height: 80px; max-width: 100%; object-fit: contain;">
-        </div>
-        <h1 style="font-size: 30px; font-weight: 700; letter-spacing: 0.5px;">PR Service plus+</h1>
-        <p style="font-weight: 300; opacity: 0.9;">ระบบขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น</p>
-        
-        <div class="header-badges">
-            <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
-            <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
-            <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
+        <div class="header-content-wrapper">
+            <!-- ช่องใส่โลโก้ทรงสี่เหลี่ยมจัตุรัส วางชิดซ้าย -->
+            <div class="logo-placeholder">
+                <img src="logoprs+.png" alt="PR Service Plus+ Logo">
+            </div>
+            
+            <!-- ส่วนข้อความด้านขวา -->
+            <div class="header-text-details">
+                <div class="header-title-container">
+                    <h1>PR Service Plus+</h1>
+                    <span class="smart-tag"><i class="fa-solid fa-bolt"></i> SMART CITY</span>
+                </div>
+                <p class="header-subtitle">
+                    <i class="fa-solid fa-building-user"></i> แพลตฟอร์มขอใช้บริการงานประชาสัมพันธ์ | กองยุทธศาสตร์และงบประมาณ เทศบาลตำบลบ้านแป้น
+                </p>
+                <div class="header-badges">
+                    <span class="header-badge-item"><i class="fa-solid fa-camera"></i> ภาพนิ่ง/วิดีโอ</span>
+                    <span class="header-badge-item"><i class="fa-solid fa-bullhorn"></i> เสียงตามสาย / รถ PR</span>
+                    <span class="header-badge-item"><i class="fa-solid fa-globe"></i> สื่อโซเชียล & เว็บไซต์</span>
+                </div>
+            </div>
         </div>
     </header>
 
