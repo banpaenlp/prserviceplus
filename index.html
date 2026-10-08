@@ -343,6 +343,42 @@
             box-shadow: 0 0 0 3px rgba(255, 127, 17, 0.25) !important;
         }
 
+        /* ================= Custom File Upload Button ================= */
+        input[type="file"] {
+            padding: 8px 12px;
+            background: #F8FAFC;
+            border: 1px dashed #CBD5E1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: var(--primary-orange);
+            background: var(--light-orange);
+        }
+
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, var(--primary-orange), #FF9F43);
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            font-family: 'Prompt', sans-serif;
+            cursor: pointer;
+            margin-right: 12px;
+            box-shadow: 0 3px 10px rgba(255, 127, 17, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 127, 17, 0.4);
+            background: linear-gradient(135deg, #FF6B00, #FF8F1F);
+        }
+
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
